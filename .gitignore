@@ -55,3 +55,2345 @@ __history/
 
 # Castalia statistics file
 *.stat
+
+unit pv;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, Forms, Dialogs,
+  TeEngine, Series, Db, DBTables, ExtCtrls, TeeProcs, Chart, StdCtrls,
+  ComCtrls, Menus, ImgList, jpeg, Setting,
+  DbChart, ADODB, Grids, MPlayer, IdBaseComponent, IdComponent,
+  IdTCPConnection, IdTCPClient, IdFTP, IdIOHandler, IdIOHandlerSocket;
+
+type
+  TForm1 = class(TForm)
+    Thour: TTable;
+    Tmonth: TTable;
+    Tyear: TTable;
+    Bexport: TButton;
+    OpenDialog1: TOpenDialog;
+    MainMenu1: TMainMenu;
+    N11: TMenuItem;
+    Import: TMenuItem;
+    Export: TMenuItem;
+    exit1: TMenuItem;
+    Timer1: TTimer;
+    setting1: TMenuItem;
+    Setup1: TMenuItem;
+    Tsetting: TTable;
+    DataSource1: TDataSource;
+    Query1: TQuery;
+    Tday: TTable;
+    Timer2: TTimer;
+    Timer3: TTimer;
+    Bread2: TButton;
+    Bwrite: TButton;
+    Baddday: TButton;
+    Query2: TQuery;
+    Bserch: TButton;
+    Query3: TQuery;
+    Query4: TQuery;
+    Bcheckdb: TButton;
+    Timer4: TTimer;
+    Btnrecaculate: TButton;
+    Bswimport: TButton;
+    Tmin: TTable;
+    Bdeltaimp: TButton;
+    Btransfer: TButton;
+    ADOTable1: TADOTable;
+    ADOQuery1: TADOQuery;
+    ADOConnection1: TADOConnection;
+    Breculatehour: TButton;
+    ADOTable2: TADOTable;
+    Breculday: TButton;
+    ADOTable3: TADOTable;
+    Button1: TButton;
+    ADOTable4: TADOTable;
+    Tdatamin: TTable;
+    Button2: TButton;
+    Button3: TButton;
+    Button4: TButton;
+    Button5: TButton;
+    Button6: TButton;
+    Button7: TButton;
+    Button8: TButton;
+    Button9: TButton;
+    Button10: TButton;
+    Button11: TButton;
+    Table1: TTable;
+    Button12: TButton;
+    ADOTtraffic: TADOTable;
+    BFTP: TButton;
+    IdFTP1: TIdFTP;
+    Button13: TButton;
+    PageControl1: TPageControl;
+    TabSheet5: TTabSheet;
+    Image3: TImage;
+    LBsw: TLabel;
+    LBwnow: TLabel;
+    Label9: TLabel;
+    LBwall: TLabel;
+    Label11: TLabel;
+    LbTemp: TLabel;
+    TabSheet6: TTabSheet;
+    DBChart1: TDBChart;
+    Series9: TLineSeries;
+    Series8: TLineSeries;
+    Series7: TLineSeries;
+    TabSheet7: TTabSheet;
+    DBChart2: TDBChart;
+    Series10: TBarSeries;
+    TabSheet8: TTabSheet;
+    DBChart3: TDBChart;
+    Series11: TBarSeries;
+    TabSheet9: TTabSheet;
+    DBChart4: TDBChart;
+    Series12: TBarSeries;
+    TabSheet10: TTabSheet;
+    DBChart5: TDBChart;
+    Series13: TBarSeries;
+    TabSheet2: TTabSheet;
+    StringGrid1: TStringGrid;
+    TabSheet1: TTabSheet;
+    Image1: TImage;
+    TabSheet3: TTabSheet;
+    Image4: TImage;
+    Label1: TLabel;
+    Label2: TLabel;
+    Label4: TLabel;
+    Label6: TLabel;
+    Label8: TLabel;
+    Label10: TLabel;
+    Label12: TLabel;
+    Label13: TLabel;
+    Label17: TLabel;
+    Label7: TLabel;
+    Label5: TLabel;
+    Label14: TLabel;
+    Button14: TButton;
+    Memo1: TMemo;
+    DBChart7: TDBChart;
+    LineSeries5: TLineSeries;
+    DBChart6: TDBChart;
+    LineSeries1: TLineSeries;
+    Label18: TLabel;
+    Label19: TLabel;
+    ComboBox1: TComboBox;
+    ComboBox2: TComboBox;
+    ComboBox3: TComboBox;
+    Label3: TLabel;
+    ComboBox4: TComboBox;
+    Labinvn: TLabel;
+    Label15: TLabel;
+    Label16: TLabel;
+    CheckBox1: TCheckBox;
+    ComboBox5: TComboBox;
+    LABEL20: TLabel;
+    Series1: TLineSeries;
+    Label21: TLabel;
+    procedure FormShow(Sender: TObject);
+    procedure BexportClick(Sender: TObject);
+    procedure exit1Click(Sender: TObject);
+    procedure ImportClick(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure ComboBox4Change(Sender: TObject);
+    procedure Setup1Click(Sender: TObject);
+    procedure BserchClick(Sender: TObject);
+    procedure BwriteClick(Sender: TObject);
+    procedure ComboBox3Change(Sender: TObject);
+    procedure ComboBox1Change(Sender: TObject);
+    procedure ComboBox2Change(Sender: TObject);
+//    function ReturnTime: double ;
+//    function CRC(Code: string): Byte;
+//    procedure BreadClick(Sender: TObject);
+//    procedure Comm1OnComm(Sender: TObject; DataPtr: Pointer;
+//      DataSize: Integer);
+    procedure Timer2Timer(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure Timer3Timer(Sender: TObject);
+    procedure Bread2Click(Sender: TObject);
+    procedure ExportClick(Sender: TObject);
+    procedure BadddayClick(Sender: TObject);
+    procedure BcheckdbClick(Sender: TObject);
+    procedure Timer4Timer(Sender: TObject);
+    procedure BtnrecaculateClick(Sender: TObject);
+    procedure BswimportClick(Sender: TObject);
+    procedure BdeltaimpClick(Sender: TObject);
+    procedure BtransferClick(Sender: TObject);
+    procedure BreculatehourClick(Sender: TObject);
+    procedure BreculdayClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Button6Click(Sender: TObject);
+    procedure Button7Click(Sender: TObject);
+    procedure Button8Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
+    procedure Button12Click(Sender: TObject);
+    procedure BFTPClick(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
+    procedure Image3Click(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
+    procedure Label1Click(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  server,Filename,transtime:String;
+  KWH,KW:ARRAY[1..8] OF real;
+  pac,iac,vac,fac,zac,pdc,vdc,idc,vpv,vpv1,vpv2,vpv3,ipv1,ipv2,ipv3,ppv1,ppv2,ppv3,
+  temp,temp1,temp2,rad1,rad2,etoday,etotal,htotal,DCETOTAL:ARRAY[1..8] OF string;
+  swcheck,errorcode,invno:integer;
+implementation
+
+{$R *.DFM}
+
+
+procedure TForm1.FormShow(Sender: TObject);
+VAR
+  I:INTEGER;
+  cmd:PChar ;
+  sflg,str,day,month,year:string;
+begin
+  str:= datetostr(date);
+  day:=copy(str,9,2);
+  month:=copy(str,6,2);
+  year:=copy(str,1,4);
+  ComboBox1.text:=year;
+  ComboBox2.text:=month;
+  ComboBox3.text:=day;
+  for i := 1 to 8 do
+    begin
+      pac[i]:='0';
+      iac[i]:='0';
+      fac[i]:='0';
+      zac[i]:='0';
+      vac[i]:='0';
+      pdc[i]:='0';
+      vdc[i]:='0';
+      idc[i]:='0';
+      vpv[i]:='0';
+      vpv1[i]:='0';
+      vpv2[i]:='0';
+      vpv3[i]:='0';
+      ipv1[i]:='0';
+      ipv2[i]:='0';
+      ipv3[i]:='0';
+      ppv1[i]:='0';
+      ppv2[i]:='0';
+      ppv3[i]:='0';
+      temp[i]:='0';
+      temp1[i]:='0';
+      temp2[i]:='0';
+      rad1[i]:='0';
+      rad2[i]:='0';
+      etoday[i]:='0';
+      etotal[i]:='0';
+      htotal[i]:='0';
+      DCETOTAL[i]:='0';
+    end;
+
+//  swcheck:=1;
+  FOR I := 1 TO 8 DO
+    BEGIN
+      KWH[I]:=0;
+      KW[I]:=0;
+    END;
+
+  Bserch.Click;
+  server:='0';
+  sflg:='0';
+
+
+  with Tsetting do
+    begin
+      Active:=true;
+      first;
+      Label11.Caption:= FieldByName('starttime').AsString;
+      Labinvn.Caption:= FieldByName('model').AsString;
+      Label5.Caption:= FieldByName('reclen').AsString;
+      sflg:=FieldByName('sflg').AsString;
+      server:=FieldByName('server').AsString;
+//      invno:=FieldByName('invno').Asinteger;
+      invno:=4;
+      transtime:=FieldByName('trantime').AsString;
+      Active:=false;
+    end;
+
+{
+  if SERVER = '0' then
+    begin
+      timer3.enabled:=true;
+      timer4.enabled:=true;
+      Bcheckdb.Click;
+    end;
+
+  if sflg = '1' then
+    begin
+      cmd:='cr200' ;
+      WinExec(cmd,SW_SHOW) ;
+
+      cmd:='kaco' ;
+      WinExec(cmd,SW_SHOW) ;
+
+      cmd:='Phinex' ;
+      WinExec(cmd,SW_SHOW) ;
+
+      cmd:='aigo' ;
+      WinExec(cmd,SW_SHOW) ;
+
+//      cmd:='inveter1' ;
+//     WinExec(cmd,SW_SHOW) ;
+
+      cmd:='delta' ;
+      WinExec(cmd,SW_SHOW) ;
+
+      cmd:='web' ;
+      WinExec(cmd,SW_SHOW) ;
+    end;
+}
+  Bread2.Click;
+
+  tabsheet6.caption:='CURVE';
+  tabsheet7.caption:='HOUR';
+  tabsheet8.caption:='DAY';
+  tabsheet9.caption:='MONTH';
+  tabsheet10.caption:='YEAR';
+  tabsheet2.caption:='REAL TIME DATA';
+  tabsheet1.caption:='';
+  tabsheet3.caption:='';
+  tabsheet5.caption:='DEMO';
+//  tabsheet4.caption:='Temp.';
+//  tabsheet11.caption:='Rad.';
+{
+  tabsheet6.caption:='發電曲線';
+  tabsheet7.caption:='小時發電量';
+  tabsheet8.caption:='日發電量';
+  tabsheet9.caption:='月發電量';
+  tabsheet10.caption:='年發電量';
+  tabsheet2.caption:='即時發電資料';
+  tabsheet1.caption:='';
+  tabsheet3.caption:='';
+  tabsheet5.caption:='DEMO';
+{  tabsheet4.caption:='溫度';
+  tabsheet11.caption:='日照';
+}
+end;
+
+procedure TForm1.BexportClick(Sender: TObject);
+VAR
+  FILES:INTEGER;
+  FileStatus:String;
+  Status:String;
+  buffer:String;
+begin
+  FileStatus:='c:\pv\1.dat';
+  FILES:=Fileopen(FileStatus,fmOpenReadWrite or fmShareDenyNone);
+  FILESEEK(FILEs,0,0);
+  FILEread(FILEs,buffer,12);
+  Status:=buffer;
+  FILESEEK(FILEs,14,0);
+  FILEread(FILEs,buffer,3);
+end;
+
+procedure TForm1.exit1Click(Sender: TObject);
+begin
+  close;
+end;
+
+procedure TForm1.ImportClick(Sender: TObject);
+begin
+  OpenDialog1.Execute;
+  Filename:=OpenDialog1.Files.Text;
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);        //秀即時資訊
+var
+  str:string;
+  n,i:integer;
+begin
+  n:=StrToInt(ComboBox4.text);
+  str:= TimeToStr(Time);
+  str:= copy(str,7,2);
+  LBwall.Caption := etotal[n];
+  LBwnow.Caption:= floattostr(strtofloat(pac[n])/1000);
+  LBsw.Caption := rad1[n];
+  LbTemp.Caption:=temp1[n];
+
+  label5.Caption := floattostr(3*StrTofloat(LBwall.Caption));
+//  label7.Caption := floattostr(0.166*StrTofloat(LBwnow.Caption));    //GS
+//  label7.Caption := floattostr(2.3*StrTofloat(LBwall.Caption));
+//  label7.Caption := floattostr(0.00062*StrTofloat(LBwall.Caption));   //電費單
+  label7.Caption := floattostr(2.3*StrTofloat(LBwall.Caption));     //能源局
+  str:= DateToStr(Date)+ '  '+TimeToStr(Time);
+  label9.Caption := str;
+  str:= DateToStr(Date);
+
+  with StringGrid1 do
+    begin
+      for i := 1 to 8 do
+        begin
+          cells[i,0]:='INVNO:'+ inttostr(i);
+          cells[0,1]:='pac';
+          cells[0,2]:='temp';
+          cells[0,3]:='iac';
+          cells[0,4]:='fac';
+          cells[0,5]:='vac';
+          cells[0,6]:='ppv1';
+          cells[0,7]:='vpv1';
+          cells[0,8]:='ipv1';
+          cells[0,9]:='ppv2';
+          cells[0,10]:='vpv2';
+          cells[0,11]:='ipv2';
+          cells[0,12]:='ppv3';
+          cells[0,13]:='ipv3';
+          cells[0,14]:='vpv3';
+          cells[0,15]:='etotal';
+          cells[0,16]:='htotal';
+          cells[0,17]:='temp1';
+          cells[0,18]:='temp2';
+          cells[0,19]:='rad1';
+          cells[0,20]:='rad2';
+          cells[i,1]:=pac[i] + '  w';
+          cells[i,2]:=temp[i] + ' deg C';
+          cells[i,3]:=iac[i] + ' A';
+          cells[i,4]:=fac[i] + ' HZ';
+          cells[i,5]:=vac[i] + ' V';
+          cells[i,6]:=ppv1[i] + ' w';
+          cells[i,7]:=vpv1[i] + ' V';
+          cells[i,8]:=ipv1[i] + ' A';
+          cells[i,9]:=ppv2[i] + ' w';
+          cells[i,10]:=vpv2[i] + ' V';
+          cells[i,11]:=ipv2[i] + ' A';
+          cells[i,12]:=ppv3[i] + ' w';
+          cells[i,13]:=vpv3[i] + ' V';
+          cells[i,14]:=ipv3[i] + ' A';
+          cells[i,15]:=etotal[i] + ' KwH';
+          cells[i,16]:=htotal[i] + ' HR';
+          cells[i,17]:=temp1[i] + ' deg C';
+          cells[i,18]:=temp2[i] + ' deg C';
+          cells[i,19]:=rad1[i] + ' w/m2';
+          cells[i,20]:=rad2[i] + ' w/m2';
+        end;
+    end;
+
+end;
+
+procedure TForm1.ComboBox4Change(Sender: TObject);            //第幾台資料
+begin
+  with Tsetting do
+    begin
+      Active:=true;
+      IndexFieldNames :='dbnum';
+      setkey;
+      FieldByName('dbnum').AsString:=ComboBox4.Text;
+      GotoKey;
+      Label11.Caption:= FieldByName('starttime').AsString;
+      Labinvn.Caption:= FieldByName('model').AsString;
+      Label15.Caption:= FieldByName('reclen').AsString;
+      Active:=false;
+    end;
+
+  Bserch.Click;
+end;
+
+procedure TForm1.Setup1Click(Sender: TObject);                 //setting 畫面
+begin
+  Formsetting.show;
+end;
+
+procedure TForm1.BserchClick(Sender: TObject);                //歷史資料查詢
+VAR
+  x1,x2,x3:string;
+  n:integer;
+  x:real;
+begin
+
+  n:=strtoint(ComboBox4.Text);
+
+  ADOQuery1.close;                                                                   //查 SITE
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from TSITE');
+  ADOQuery1.sql.add('where ID = :STID');
+  ADOQuery1.Parameters.parambyname('STID').value:=ComboBox5.text;
+  ADOQuery1.open;
+  Label21.CAPTION:=ADOQuery1.Fields[1].VALUE;
+
+  ADOQuery1.close;                                                                   //更改發電曲線圖形
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from TMIN');
+  ADOQuery1.sql.add('where TIME1 > :time1');
+  ADOQuery1.sql.add('and TIME1 < :time2');
+  ADOQuery1.sql.add('and STID = :STID');
+  ADOQuery1.sql.add('order by TIME1');
+  ADOQuery1.Parameters.parambyname('time1').value:=ComboBox1.text+ComboBox2.text+ComboBox3.text+'0500';
+  ADOQuery1.Parameters.parambyname('time2').value:=ComboBox1.text+ComboBox2.text+ComboBox3.text+'1900';
+  ADOQuery1.Parameters.parambyname('STID').value:=ComboBox5.text;
+  ADOQuery1.open;
+
+  with DBChart1 do
+    begin
+      Series7.Clear ;
+      Series8.Clear ;
+      Series9.Clear ;
+      Series1.Clear ;
+
+      while not ADOQuery1.EOF do
+        begin
+          x1:=ADOQuery1.Fields[0].asstring ;
+          x2:=copy(x1,11,2);
+          x3:=copy(x1,9,2);
+          x:=strtofloat(x3)+strtofloat(x2)/60 ;
+          series7.AddXY(x,ADOQuery1.Fields[1].value);
+          series8.AddXY(x,ADOQuery1.Fields[2].value);
+          series9.AddXY(x,ADOQuery1.Fields[3].value);
+          series1.AddXY(x,ADOQuery1.Fields[4].value);
+          ADOQuery1.next;
+        end;
+    end;
+
+  with DBChart7 do                                                                //日照
+    begin
+      LineSeries5.Clear ;
+      ADOQuery1.First;
+      while not ADOQuery1.EOF do
+        begin
+          x1:=ADOQuery1.Fields[0].asstring ;
+          x2:=copy(x1,11,2);
+          x3:=copy(x1,9,2);
+          x:=strtofloat(x3)+strtofloat(x2)/60 ;
+          LineSeries5.AddXY(x,ADOQuery1.Fields[10].value);
+          ADOQuery1.next;
+        end;
+    end;
+                                                                                  
+  with DBChart6 do                                                                //溫度
+    begin
+      LineSeries1.Clear ;
+      ADOQuery1.First;
+      while not ADOQuery1.EOF do
+        begin
+          x1:=ADOQuery1.Fields[0].asstring ;
+          x2:=copy(x1,11,2);
+          x3:=copy(x1,9,2);
+          x:=strtofloat(x3)+strtofloat(x2)/60 ;
+          LineSeries1.AddXY(x,ADOQuery1.Fields[9].value);
+          ADOQuery1.next;
+        end;
+      ADOQuery1.active:=false;
+    end;
+
+  ADOQuery1.close;                                                                  //小時
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from THOUR');
+  ADOQuery1.sql.add('where TIME1 > :time1');
+  ADOQuery1.sql.add('and TIME1 < :time2');
+  ADOQuery1.sql.add('and STID = :STID');
+  ADOQuery1.sql.add('order by TIME1');
+  ADOQuery1.Parameters.parambyname('time1').value:=ComboBox1.text+ComboBox2.text+ComboBox3.text+'04';
+  ADOQuery1.Parameters.parambyname('time2').value:=ComboBox1.text+ComboBox2.text+ComboBox3.text+'19';
+  ADOQuery1.Parameters.parambyname('STID').value:=ComboBox5.text;
+  ADOQuery1.open;
+
+  with DBChart2 do
+    begin
+      Series10.Clear ;
+
+      while not ADOQuery1.EOF do
+        begin
+          x1:=ADOQuery1.Fields[0].asstring ;
+          x3:=copy(x1,9,2);
+          x:=strtofloat(x3);
+          series10.AddXY(x,ADOQuery1.Fields[n].value);
+          ADOQuery1.next;
+        end;
+      ADOQuery1.active:=false;
+    end;
+
+  ADOQuery1.close;                                                               //日
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from TDAY');
+  ADOQuery1.sql.add('where TIME1 > :time1');
+  ADOQuery1.sql.add('and TIME1 < :time2');
+  ADOQuery1.sql.add('and STID = :STID');
+  ADOQuery1.sql.add('order by TIME1');
+  ADOQuery1.Parameters.parambyname('time1').value:=ComboBox1.text+ComboBox2.text+'00';
+  ADOQuery1.Parameters.parambyname('time2').value:=ComboBox1.text+ComboBox2.text+'32';
+  ADOQuery1.Parameters.parambyname('STID').value:=ComboBox5.text;
+  ADOQuery1.open;
+
+  with DBChart3 do
+    begin
+      Series11.Clear ;
+
+      while not ADOQuery1.EOF do
+        begin
+          x1:=ADOQuery1.Fields[0].asstring ;
+          x3:=copy(x1,7,2);
+          x:=strtofloat(x3);
+          series11.AddXY(x,ADOQuery1.Fields[n].value);
+          ADOQuery1.next;
+        end;
+      ADOQuery1.active:=false;
+    end;
+
+  ADOQuery1.close;                                                               //月
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from TMONTH');
+  ADOQuery1.sql.add('where TIME1 > :time1');
+  ADOQuery1.sql.add('and TIME1 < :time2');
+  ADOQuery1.sql.add('and STID = :STID');
+  ADOQuery1.sql.add('order by TIME1');
+  ADOQuery1.Parameters.parambyname('time1').value:=ComboBox1.text+'00';
+  ADOQuery1.Parameters.parambyname('time2').value:=ComboBox1.text+'13';
+  ADOQuery1.Parameters.parambyname('STID').value:=ComboBox5.text;
+  ADOQuery1.open;
+
+  with DBChart4 do
+    begin
+      Series12.Clear ;
+      while not ADOQuery1.EOF do
+        begin
+          x1:=ADOQuery1.Fields[0].asstring ;
+          x3:=copy(x1,5,2);
+          x:=strtofloat(x3);
+          series12.AddXY(x,ADOQuery1.Fields[n].value);
+          ADOQuery1.next;
+        end;
+    end;
+
+  ADOQuery1.close;                                                               //年
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from TYEAR');
+  ADOQuery1.sql.add('WHERE STID = :STID');
+  ADOQuery1.sql.add('order by TIME1');
+  ADOQuery1.Parameters.parambyname('STID').value:=ComboBox5.text;
+  ADOQuery1.open;
+
+  with DBChart5 do
+    begin
+      Series13.Clear ;
+      x1:=ADOQuery1.Fields[0].asstring ;
+      x3:=copy(x1,1,4);
+      x:=strtofloat(x3);
+      series13.AddXY(x,ADOQuery1.Fields[n].value);
+      ADOQuery1.next;
+      while not ADOQuery1.EOF do
+        begin
+          x1:=ADOQuery1.Fields[0].asstring ;
+          x3:=copy(x1,1,4);
+          x:=strtofloat(x3);
+          series13.AddXY(x,ADOQuery1.Fields[n].value);
+          ADOQuery1.next;
+        end;
+    end;
+
+  ADOQuery1.active:=false;
+
+end;
+
+procedure TForm1.BwriteClick(Sender: TObject);                                      //寫入資料
+var
+  i:integer;
+  hour1,date1,str:string;
+begin
+  str:= timetostr(time);
+  hour1:= copy(str,1,2)+ copy(str,4,2);
+
+  if (strtoint(copy(str,1,2)) > 5) and (strtoint(copy(str,1,2)) < 19) then
+    begin
+      errorcode := 0;
+      timer3.Interval:=60000;
+    end;
+  if (strtoint(copy(str,1,2)) > 19) or (strtoint(copy(str,1,2)) < 5) then
+    begin
+      errorcode := 6;
+      timer3.Interval:=1800000;
+    end;
+
+  str:= datetostr(date);
+  date1:=copy(str,1,4) + copy(str,6,2)+ copy(str,9,2)+hour1;
+
+  ADOQuery1.close;
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('insert into TMIN (TIME1, W1, W2, W3, W4, W5, W6, W7, W8, TEMP, RAD, STID)');
+  ADOQuery1.sql.add('values (:TIME1, :W1, :W2, :W3, :W4, :W5, :W6, :W7, :W8, :TEMP, :RAD, :STID)');
+  ADOQuery1.Parameters.ParamByName('TIME1').Value:= date1;
+  ADOQuery1.Parameters.ParamByName('W1').Value:= strtofloat(pac[1]);
+  ADOQuery1.Parameters.ParamByName('W2').Value:= strtofloat(pac[2]);
+  ADOQuery1.Parameters.ParamByName('W3').Value:= strtofloat(pac[3]);
+  ADOQuery1.Parameters.ParamByName('W4').Value:= strtofloat(pac[4]);
+  ADOQuery1.Parameters.ParamByName('W5').Value:= strtofloat(pac[5]);
+  ADOQuery1.Parameters.ParamByName('W6').Value:= strtofloat(pac[6]);
+  ADOQuery1.Parameters.ParamByName('W7').Value:= strtofloat(pac[7]);
+  ADOQuery1.Parameters.ParamByName('W8').Value:= strtofloat(pac[8]);
+  ADOQuery1.Parameters.ParamByName('TEMP').Value:= strtofloat(temp1[1]);
+  ADOQuery1.Parameters.ParamByName('RAD').Value:= strtofloat(rad1[1]);
+  ADOQuery1.Parameters.ParamByName('STID').Value:= STRTOINT(ComboBox5.text);
+  ADOQuery1.ExecSQL;
+
+  for i := 1 to invno do
+    begin
+      ADOQuery1.close;
+      ADOQuery1.SQL.Clear;
+      ADOQuery1.SQL.add('insert into TMINDATA (TIME1,INVNO,TEMP,VPV,IAC,VAC,FAC,PAC,ZAC,ETOTAL,HTOTAL,VPV1,VPV2,VPV3,IPV1,IPV2,IPV3,PPV1,PPV2,PPV3,TEMP1,TEMP2,RAD1,RAD2,DCETOTAL,STID)');
+      ADOQuery1.sql.add('values (:TIME1,:INVNO,:TEMP,:VPV,:IAC,:VAC,:FAC,:PAC,:ZAC,:ETOTAL,:HTOTAL,:VPV1,:VPV2,:VPV3,:IPV1,:IPV2,:IPV3,:PPV1,:PPV2,:PPV3,:TEMP1,:TEMP2,:RAD1,:RAD2,:DCETOTAL,:STID)');
+      ADOQuery1.Parameters.ParamByName('TIME1').Value:= date1;
+      ADOQuery1.Parameters.ParamByName('INVNO').Value:=i;
+      ADOQuery1.Parameters.ParamByName('TEMP').Value:= strtofloat(temp[i]);
+      ADOQuery1.Parameters.ParamByName('VPV').Value:= strtofloat(vpv[i]);
+      ADOQuery1.Parameters.ParamByName('IAC').Value:= strtofloat(iac[i]);
+      ADOQuery1.Parameters.ParamByName('VAC').Value:= strtofloat(vac[i]);
+      ADOQuery1.Parameters.ParamByName('FAC').Value:= strtofloat(fac[i]);
+      ADOQuery1.Parameters.ParamByName('PAC').Value:= strtofloat(pac[i]);
+      ADOQuery1.Parameters.ParamByName('ZAC').Value:= strtofloat(zac[i]);
+      ADOQuery1.Parameters.ParamByName('ETOTAL').Value:= strtofloat(etotal[i]);
+      ADOQuery1.Parameters.ParamByName('HTOTAL').Value:=strtofloat(htotal[i]);
+      ADOQuery1.Parameters.ParamByName('VPV1').Value:=strtofloat(vpv1[i]);
+      ADOQuery1.Parameters.ParamByName('VPV2').Value:=strtofloat(vpv2[i]);
+      ADOQuery1.Parameters.ParamByName('VPV3').Value:=strtofloat(vpv3[i]);
+      ADOQuery1.Parameters.ParamByName('IPV1').Value:=strtofloat(ipv1[i]);
+      ADOQuery1.Parameters.ParamByName('IPV2').Value:=strtofloat(ipv2[i]);
+      ADOQuery1.Parameters.ParamByName('IPV3').Value:=strtofloat(ipv3[i]);
+      ADOQuery1.Parameters.ParamByName('PPV1').Value:=strtofloat(ppv1[i]);
+      ADOQuery1.Parameters.ParamByName('PPV2').Value:=strtofloat(ppv2[i]);
+      ADOQuery1.Parameters.ParamByName('PPV3').Value:=strtofloat(ppv3[i]);
+      ADOQuery1.Parameters.ParamByName('TEMP1').Value:=strtofloat(temp1[i]);
+      ADOQuery1.Parameters.ParamByName('TEMP2').Value:=strtofloat(temp2[i]);
+      ADOQuery1.Parameters.ParamByName('RAD1').Value:=strtofloat(rad1[i]);
+      ADOQuery1.Parameters.ParamByName('RAD2').Value:=strtofloat(rad2[i]);
+      ADOQuery1.Parameters.ParamByName('DCETOTAL').Value:= strtofloat(DCETOTAL[i]);
+      ADOQuery1.Parameters.ParamByName('STID').Value:= STRTOINT(ComboBox5.text);
+      ADOQuery1.ExecSQL;
+    end;
+
+
+  Tmin.open;
+  Tmin.last;
+  Tmin.Append;
+  Tmin.Fields[0].Value:=date1;
+  Tmin.Fields[1].Value:= pac[1];
+  Tmin.Fields[2].Value:= pac[2];
+  Tmin.Fields[3].Value:= pac[3];
+  Tmin.Fields[4].Value:= pac[4];
+  Tmin.Fields[5].Value:= pac[5];
+  Tmin.Fields[6].Value:= pac[6];
+  Tmin.Fields[7].Value:= pac[7];
+  Tmin.Fields[8].Value:= pac[8];
+  Tmin.Fields[9].Value:= rad1[1];
+  Tmin.Fields[10].Value:= temp1[1];
+  Tmin.post;
+  Tmin.close;
+
+  Tdatamin.open;
+  Tdatamin.last;
+  for i := 1 to invno do
+    begin
+      Tdatamin.Append;
+      memo1.Lines.Add(date1);
+      memo1.Lines.Add(inttostr(i));
+      Tdatamin.Fields[0].Value:=date1;
+      Tdatamin.Fields[1].Value:= i;
+      Tdatamin.Fields[2].Value:= temp[i];
+      Tdatamin.Fields[3].Value:= vpv[i];
+      Tdatamin.Fields[4].asstring:= iac[i];
+      Tdatamin.Fields[5].Value:= vac[i];
+      Tdatamin.Fields[6].Value:= fac[i];
+      Tdatamin.Fields[7].Value:= pac[i];
+      Tdatamin.Fields[8].Value:= zac[i];
+      Tdatamin.Fields[9].Value:= etotal[i];
+      Tdatamin.Fields[10].Value:=htotal[i];
+      Tdatamin.Fields[11].Value:=vpv1[i];
+      Tdatamin.Fields[12].Value:=vpv2[i];
+      Tdatamin.Fields[13].Value:=vpv3[i];
+      Tdatamin.Fields[14].Value:=ipv1[i];
+      Tdatamin.Fields[15].Value:=ipv2[i];
+      Tdatamin.Fields[16].Value:=ipv3[i];
+      Tdatamin.Fields[17].Value:=ppv1[i];
+      Tdatamin.Fields[18].Value:=ppv2[i];
+      Tdatamin.Fields[19].Value:=ppv3[i];
+      Tdatamin.Fields[20].Value:=temp1[i];
+      Tdatamin.Fields[21].Value:=temp2[i];
+      Tdatamin.Fields[22].Value:=rad1[i];
+      Tdatamin.Fields[23].Value:=rad2[i];
+    end;
+  Tdatamin.post;
+  Tdatamin.close;
+
+  Bserch.Click;
+end;
+
+procedure TForm1.ComboBox3Change(Sender: TObject);
+begin
+  Bserch.Click
+end;
+
+procedure TForm1.ComboBox1Change(Sender: TObject);
+begin
+  Bserch.Click;
+end;
+
+procedure TForm1.ComboBox2Change(Sender: TObject);
+begin
+  Bserch.Click;
+end;
+{
+function TForm1.ReturnTime: double ;                 //計算comport回應時間
+ var
+   Present:TDatetime ;
+   h,m,s,ms:word ;
+ begin
+     Present:=Now ;
+     DecodeTime(Present, h, m ,s,ms);
+     ReturnTime:=h*24*6+m*60+S ;
+ end ;
+
+procedure TForm1.BreadClick(Sender: TObject);    // read inveter data
+var
+  outstr:string[255]  ;
+  echo:string[8] ;
+  model:string;
+  c:double ;
+  InvNo,portn,reclen,sec,i:integer;
+begin
+  try
+  outstr:='';
+  Tsetting.Active:=true;
+  Tsetting.First;
+  InvNo:= Tsetting.Fields[1].Value;
+  i:=1;
+//  errorcode:=6;
+  if errorcode > 5 then exit;
+//  for i = 1 to InvNo do
+//    begin
+      model:= Tsetting.Fields[4].Value;
+      reclen:= Tsetting.Fields[5].Value;
+      portn:= Tsetting.FieldByName('portn').Value;
+      with Comm1 do
+         begin
+           CommPort:= portn;
+           PortOpen:=True ;
+           inputLen:=8 ;
+           c:=ReturnTime ;
+
+           if model = 'kaco 4501' then       //kaco 4501
+             begin
+               Repeat
+                 echo:=Input;
+                 outstr:=outstr+echo;
+               until (ReturnTime-c>11) or (length(outstr)=reclen) ;
+
+               IF length(outstr)= reclen THEN
+                 BEGIN
+                   if i = 1 then w1:=strtoint(copy(outstr,38,4));
+                   if i = 1 then w5:=strtoint(copy(outstr,56,4));
+                   if i = 2 then w2:=strtoint(copy(outstr,38,4));
+                   if i = 3 then w3:=strtoint(copy(outstr,38,4));
+                   if i = 4 then w4:=strtoint(copy(outstr,38,4));
+                   t2:=strtoint(copy(outstr,62,2));
+                   Timer2.Enabled:=false;
+                   Timer2.Interval:=9000;
+                   Timer2.Enabled:=true;
+                   sec:= 11;
+                   errorcode:= 0;
+                 END;
+               IF length(outstr) <> reclen THEN
+                 begin
+                   errorcode:= errorcode+1;
+                 end;
+            end;
+
+           if model = 'GS' then           //gs
+             begin
+               Repeat
+                 echo:=Input;
+               until (ReturnTime-c>2) or (copy(echo,2,7)='Z0Sa300') ;
+               IF copy(echo,2,7)='Z0Sa300' THEN
+                 begin
+                   Repeat
+                     echo:=Input;
+                     outstr:=outstr+echo;
+                   until (ReturnTime-c>2) or (length(outstr)=reclen) ;
+                   if i = 1 then w1:=strtoint(copy(outstr,103,5))*10;
+                   if i = 2 then w2:=strtoint(copy(outstr,103,5))*10;
+                   if i = 3 then w3:=strtoint(copy(outstr,103,5))*10;
+                   if i = 4 then w4:=strtoint(copy(outstr,103,5))*10;
+                 end;
+             end;
+           PortOpen:=false ;
+//         end;
+//       Tsetting.next;
+         end;
+  Tsetting.close;
+  except
+  end;
+end;
+
+
+procedure TForm1.Comm1OnComm(Sender: TObject; DataPtr: Pointer;
+  DataSize: Integer);
+var
+//  outstr:string[255]  ;
+//  echo:string[8] ;
+i:integer;
+viewstring:string; 
+rbuf:array[1..16] of byte;
+begin
+  viewstring:='' ;
+  move(DataPtr^,pchar(@rbuf)^,DataSize);
+  for i:=1 to DataSize do
+  viewstring:=viewstring + inttohex(rbuf[i],2)+'' ;
+  viewstring:='接收'+ viewstring;
+//  memo1.lines.add(viewstring);
+//  memo1.lines.add('' ); 
+
+//  with Comm1 do
+//     begin
+//       inputLen:=8 ;
+//       echo:=Input;
+//       outstr:=outstr+echo;
+//     end;
+
+//  IF length(outstr)= 80 THEN
+//    BEGIN
+//      w1:=strtoint(copy(outstr,38,4));
+//      T1:=strtoint(copy(outstr,62,2));
+//      outstr:='';
+//    END;
+
+end;
+}
+procedure TForm1.Timer2Timer(Sender: TObject);
+var
+  i:integer;
+begin
+  Bread2.Click;
+  i:=PageControl1.ActivePageIndex+1;
+  if i>7 then i:=0;
+  if CheckBox1.Checked=true then  PageControl1.ActivePageIndex:=i;
+end;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  Thour.active:=false;
+  Tday.active:=false;
+  Tmonth.active:=false;
+  Tyear.active:=false;
+  Tsetting.active:=false;
+end;
+
+procedure TForm1.Timer3Timer(Sender: TObject);
+begin
+//  if SERVER = '0' then
+//    begin
+//      Bwrite.Click;
+//    end;
+end;
+
+procedure TForm1.Bread2Click(Sender: TObject);         //即時資料讀取
+VAR
+  FILES:TextFile ;
+  s:string;
+  i:integer;
+begin
+  try
+    Filename:='sw.dat';
+    AssignFile(FILES, Filename);
+    reset(FILES);
+    Readln(FILES, S);
+    if s='' then s:='0';
+    for i :=1 to invno do
+      begin
+        rad1[i]:=s;
+      end;
+    Readln(FILES, S);
+    if s='' then s:='0';
+    for i :=1 to invno do
+      begin
+        temp1[i]:=s;
+      end;
+    CloseFile(FILES);
+
+    for i :=1 to invno do
+      begin
+        try
+          s:='inv';
+          Filename:=s+inttostr(i)+'.dat';
+          AssignFile(FILES, Filename);
+          reset(FILES);
+          Readln(FILES, pac[i]);        //pac kwh
+          Readln(FILES, temp[i]);
+          Readln(FILES, vpv1[i]);
+          Readln(FILES, vpv2[i]);
+          Readln(FILES, vpv3[i]);
+          Readln(FILES, ipv1[i]);
+          Readln(FILES, ipv2[i]);
+          Readln(FILES, ipv3[i]);
+          Readln(FILES, ppv1[i]);
+          Readln(FILES, ppv2[i]);
+          Readln(FILES, ppv3[i]);
+          Readln(FILES, iac[i]);
+          Readln(FILES, vac[i]);
+          Readln(FILES, fac[i]);
+          Readln(FILES, zac[i]);
+          Readln(FILES, etotal[i]);
+          Readln(FILES, htotal[i]);
+          CloseFile(FILES);
+        except
+        end;
+      end;
+  except
+  end;
+end;
+
+procedure TForm1.ExportClick(Sender: TObject);      //資料匯出
+var
+  FILES:TextFile ;
+  s:string;
+  i:integer;
+begin
+  query1.close;
+  query1.SQL.Clear;
+  query1.SQL.add('select * from tdatamin');
+  query1.sql.add('where time1 > :time1');
+  query1.sql.add('and time1 < :time2');
+  query1.sql.add('and invno = :invno');
+  query1.sql.add('order by time1');
+  query1.parambyname('time1').asstring:=ComboBox1.text+ComboBox2.text+'000000';
+  query1.parambyname('time2').asstring:=ComboBox1.text+ComboBox2.text+'320000';
+  query1.parambyname('invno').asinteger:=strtoint(ComboBox4.text);
+  query1.open;
+  query1.First;
+  Filename:='c:\pvdatamin.dat';
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  writeln(FILES,'年月日時分,invno,Temp,Vpv,Iac,Vac,Fac,Pac,Zac,ETotal,HTotal,Vpv1,Vpv2,Vpv3,Ipv1,Ipv2,Ipv3,Ppv1,Ppv2,Ppv3,Temp1,Temp2,RAD1,RAD2');
+  while not query1.Eof do
+    begin
+      s:='';
+      for i := 0 to 23 do
+        begin
+          s:=s + query1.Fields[i].AsString +',';
+        end;
+      writeln(FILES,S);
+      query1.Next;
+    end;
+  query1.close;
+  CloseFile(FILES);
+{
+  query1.close;
+  query1.SQL.Clear;
+  query1.SQL.add('select * from tmin');
+  query1.open;
+  query1.First;
+  Filename:='c:\pvmin.dat';
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  while not query1.Eof do
+    begin
+      s:='';
+      for i := 0 to 10 do
+        begin
+          s:=s + query1.Fields[i].AsString +',';
+        end;
+      writeln(FILES,S);
+      query1.Next;
+    end;
+  query1.close;
+  CloseFile(FILES);
+
+  query1.close;
+  query1.SQL.Clear;
+  query1.SQL.add('select * from thour');
+  query1.open;
+  query1.First;
+  Filename:='c:\pvhour.dat';
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  while not query1.Eof do
+    begin
+      s:='';
+      for i := 0 to 10 do
+        begin
+          s:=s + query1.Fields[i].AsString +',';
+        end;
+      writeln(FILES,S);
+      query1.Next;
+    end;
+  query1.close;
+  CloseFile(FILES);
+
+  query1.close;
+  query1.SQL.Clear;
+  query1.SQL.add('select * from tday');
+  query1.open;
+  query1.First;
+  Filename:='c:\pvday.dat';
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  while not query1.Eof do
+    begin
+      s:='';
+      for i := 0 to 10 do
+        begin
+          s:=s + query1.Fields[i].AsString +',';
+        end;
+      writeln(FILES,S);
+      query1.Next;
+    end;
+  query1.close;
+  CloseFile(FILES);
+
+  query1.close;
+  query1.SQL.Clear;
+  query1.SQL.add('select * from tmonth');
+  query1.open;
+  query1.First;
+  Filename:='c:\pvmonth.dat';
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  while not query1.Eof do
+    begin
+      s:='';
+      for i := 0 to 10 do
+        begin
+          s:=s + query1.Fields[i].AsString +',';
+        end;
+      writeln(FILES,S);
+      query1.Next;
+    end;
+  query1.close;
+  CloseFile(FILES);
+
+  query1.close;
+  query1.SQL.Clear;
+  query1.SQL.add('select * from tyear');
+  query1.open;
+  query1.First;
+  Filename:='c:\pvyear.dat';
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  while not query1.Eof do
+    begin
+      s:='';
+      for i := 0 to 10 do
+        begin
+          s:=s + query1.Fields[i].AsString +',';
+        end;
+      writeln(FILES,S);
+      query1.Next;
+    end;
+  query1.close;
+  CloseFile(FILES);
+}
+end;
+
+procedure TForm1.BadddayClick(Sender: TObject);
+var
+  i,h:integer;
+  str,year1,min1,day1,month1,hour1:string;
+  f1,f2:real;
+begin
+  str:= timetostr(time);
+  h:=strtoint(copy(str,2,1));
+  if h= 0 then   hour1:='09';
+  if h<>0 then   hour1:=copy(str,1,1)+inttostr(h-1);
+  min1:=copy(str,4,2);
+  str:= datetostr(date);
+  day1:=copy(str,1,4) + copy(str,6,2)+ copy(str,9,2);
+  month1:=copy(str,1,4)+ copy(str,6,2);
+  year1:=copy(str,1,4);
+//  hour1:=day1+hour1;
+//  hour1:='2007062611';
+  for i := 1 to 8 do
+      kwh[i]:=0;
+//  min1 := '00';
+  if min1 = '00' then                              //整點計算瓦時
+    begin
+      for i := 1 to invno do
+        begin
+          query2.close;
+          query2.SQL.Clear;
+          query2.SQL.add('select time1, etotal from tdatamin');
+          query2.sql.add('where time1 > :time1');
+          query2.sql.add('and time1 < :time2');
+          query2.sql.add('and invno = :invno');
+          query2.sql.add('order by time1');
+          query2.parambyname('time1').Asstring:=day1+hour1+'00';
+          query2.parambyname('time2').Asstring:=day1+hour1+'60';
+          query2.parambyname('invno').Asinteger:=i;
+          query2.open;
+          if not query2.Eof then
+            begin
+              query2.First;
+              f1:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f1));
+              query2.last;
+              f2:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f2));
+              kwh[i]:=(f2-f1)/1000;
+              memo1.lines.add(floattostr(kwh[i]));
+            end;
+        end;
+
+      bcheckdb.click;
+      if hour1 = copy(transtime,1,2) then bftp.Click;                 //傳輸時間到傳出資料
+
+      Thour.active:=true;                                             //每小時更新瓦時記錄
+      Thour.SetKey;
+      Thour.FieldByName('time1').Value:=day1+hour1;
+      Thour.GotoKey;
+      Thour.edit;
+      for i := 1 to 8 do
+          Thour.Fields[i].Asfloat:=kwh[i];
+      Thour.Post;
+      Thour.close;
+
+      for i := 1 to invno do
+        begin
+          query2.close;
+          query2.SQL.Clear;
+          query2.SQL.add('select time1, etotal from tdatamin');
+          query2.sql.add('where time1 > :time1');
+          query2.sql.add('and time1 < :time2');
+          query2.sql.add('and invno = :invno');
+          query2.sql.add('order by time1');
+          query2.parambyname('time1').Asstring:=day1+'0000';
+          query2.parambyname('time2').Asstring:=day1+'2359';
+          query2.parambyname('invno').Asinteger:=i;
+          query2.open;
+          if not query2.Eof then
+            begin
+              query2.First;
+              f1:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f1));
+              query2.last;
+              f2:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f2));
+              kwh[i]:=(f2-f1)/1000;
+              memo1.lines.add(floattostr(kwh[i]));
+            end;
+        end;
+      Tday.active:=true;
+      Tday.SetKey;
+      Tday.FieldByName('time1').Value:=day1;
+      Tday.GotoKey;
+      Tday.Edit;
+      for i := 1 to 8 do
+          Tday.Fields[i].Asfloat:=kwh[i];
+      Tday.Post;
+      Tday.close;
+
+      for i := 1 to invno do
+        begin
+          query2.close;
+          query2.SQL.Clear;
+          query2.SQL.add('select time1, etotal from tdatamin');
+          query2.sql.add('where time1 > :time1');
+          query2.sql.add('and time1 < :time2');
+          query2.sql.add('and invno = :invno');
+          query2.sql.add('order by time1');
+          query2.parambyname('time1').Asstring:=month1+'010000';
+          query2.parambyname('time2').Asstring:=month1+'312359';
+          query2.parambyname('invno').Asinteger:=i;
+          query2.open;
+          if not query2.Eof then
+            begin
+              query2.First;
+              f1:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f1));
+              query2.last;
+              f2:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f2));
+              kwh[i]:=(f2-f1)/1000;
+              memo1.lines.add(floattostr(kwh[i]));
+            end;
+        end;
+      tmonth.active:=true;
+      tmonth.SetKey;
+      tmonth.FieldByName('time1').Value:=month1;
+      tmonth.GotoKey;
+      tmonth.Edit;
+      for i := 1 to 8 do
+          Tmonth.Fields[i].Asfloat:=kwh[i];
+      Tmonth.Post;
+      Tmonth.close;
+
+      for i := 1 to invno do
+        begin
+          query2.close;
+          query2.SQL.Clear;
+          query2.SQL.add('select time1, etotal from tdatamin');
+          query2.sql.add('where time1 > :time1');
+          query2.sql.add('and time1 < :time2');
+          query2.sql.add('and invno = :invno');
+          query2.sql.add('order by time1');
+          query2.parambyname('time1').Asstring:=year1+'01010000';
+          query2.parambyname('time2').Asstring:=year1+'12312359';
+          query2.parambyname('invno').Asinteger:=i;
+          query2.open;
+          if not query2.Eof then
+            begin
+              query2.First;
+              f1:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f1));
+              query2.last;
+              f2:=query2.Fields[1].AsFloat*1000;
+              memo1.lines.add(floattostr(f2));
+              kwh[i]:=(f2-f1)/1000;
+              memo1.lines.add(floattostr(kwh[i]));
+            end;
+        end;
+      tyear.active:=true;
+      tyear.SetKey;
+      tyear.FieldByName('time1').Value:=year1;
+      tyear.GotoKey;
+      Tyear.edit;
+      for i := 1 to 8 do
+          Tyear.Fields[i].Asfloat:=kwh[i];
+      Tyear.Post;
+      Tyear.close;
+
+    end;
+end;
+
+procedure TForm1.BcheckdbClick(Sender: TObject);
+var
+  i:integer;
+  str,year1,hour1,day1,month1:string;
+begin
+  str:= datetostr(date);
+  year1:=copy(str,1,4);
+  month1:=copy(str,1,4)+ copy(str,6,2);
+  day1:=copy(str,1,4) + copy(str,6,2)+ copy(str,9,2);
+  str:= timetostr(time);
+  hour1:= day1+copy(str,1,2);
+
+  Thour.active:=true;
+  Thour.Last;
+  if Thour.Fields[0].Asstring <> hour1 then           //加小時
+    begin
+      Thour.Append;
+      Thour.Fields[0].Asstring:=hour1;
+      for i := 1 to 10 do
+          Thour.Fields[i].Asstring:='0';
+      Thour.post;
+    end;
+
+  Tday.active:=true;                                  //加天
+  Tday.Last;
+  if Tday.Fields[0].Asstring <> day1 then
+    begin
+      Tday.Append;
+      Tday.Fields[0].Asstring:=day1;
+      for i := 1 to 10 do
+          Tday.Fields[i].Asstring:='0';
+      Tday.post;
+    end;
+  Tday.active:=false;
+
+  Tmonth.active:=true;                                //加月
+  Tmonth.last;
+  if Tmonth.Fields[0].Asstring <> month1 then
+    begin
+      Tmonth.Append;
+      Tmonth.Fields[0].Asstring:=month1;
+      for i := 1 to 10 do
+          Tmonth.Fields[i].Asstring:='0';
+      Tmonth.post;
+    end;
+  Tmonth.active:=false;
+
+  Tyear.active:=true;
+  Tyear.LAST;                                        //加年
+  if Tyear.Fields[0].Asstring<>year1 then
+    begin
+      Tyear.Append;
+      Tyear.Fields[0].Asstring:=year1;
+      for i := 1 to 10 do
+          Tyear.Fields[i].Asstring:='0';
+      Tyear.post;
+    end;
+  Tyear.active:=false;
+end;
+
+procedure TForm1.Timer4Timer(Sender: TObject);
+var
+  i:integer;
+begin
+  if SERVER = '0' then
+    begin
+      Baddday.Click;
+    end;
+  i:=PageControl1.ActivePageIndex+1;
+  if i>8 then i:=0;
+//  if CheckBox1.Checked=true then PageControl1.ActivePageIndex:=i;
+end;
+
+procedure TForm1.BtnrecaculateClick(Sender: TObject);        //單日重算瓦時
+var
+  i:integer;
+  time1:string;
+begin
+  time1:=ComboBox1.text+ComboBox2.text+ComboBox3.text;
+  for i := 1 to 8 do
+      kwh[i]:=0;
+  for i := 1 to invno do
+    begin
+      query2.close;
+      query2.SQL.Clear;
+      query2.SQL.add('select Time1, ETotal from tdatamin');
+      query2.sql.add('where time1 > :t1');
+      query2.sql.add('and time1 < :t2');
+      query2.sql.add('and invno = :invno');
+      query2.sql.add('order by time1');
+      query2.parambyname('t1').Asstring:=time1+'0000';
+      query2.parambyname('t2').Asstring:=time1+'2400';
+      query2.parambyname('invno').Asinteger:=i;
+      query2.open;
+      if not query2.Eof then
+        begin
+          query2.First;
+          kwh[i]:=query2.Fields[1].Value;
+          Memo1.lines.add(floattostr(kwh[i]));
+          query2.last;
+          Memo1.lines.add(floattostr(query2.Fields[1].Value));
+          kwh[i]:=query2.Fields[1].Value-kwh[i];
+          Memo1.lines.add(floattostr(kwh[i]));
+          Memo1.lines.add(' ');
+        end;
+    end;
+
+    Tday.active:=true;
+    Tday.SetKey;
+    Tday.FieldByName('time1').Value:=time1;
+    Memo1.lines.add(time1);
+    Tday.GotoKey;
+//    Tday.last;
+    Tday.edit;
+    for i := 1 to 8 do
+      begin
+        Tday.Fields[i].value:=kwh[i];
+        Memo1.lines.add(floattostr(kwh[i]));
+      end;
+    Tday.Post;
+    Tday.close;
+
+end;
+
+
+procedure TForm1.BswimportClick(Sender: TObject);          //匯入日照計檔案
+var
+  FILES:TextFile ;
+  s,time1,sw1,t1,check,s1:string;
+  i:integer;
+begin
+  s:='c:\Campbellsci\Pc200w\00007.txt';
+  AssignFile(FILES, s);
+  reset(FILES);
+
+  tmin.active:=true;
+  tmin.Last;
+  while not eof(files) do
+  begin
+    Readln(FILES, S);
+    time1:=copy(s,2,4)+copy(s,7,2)+copy(s,10,2)+copy(s,13,2)+copy(s,16,2);
+    s1:='';
+    for i :=28 to length(s) do
+      begin
+        check:=copy(s,i,1);
+        if check <> ',' then s1:=s1+check ;
+        if check = ',' then
+          begin
+            sw1:=s1;
+            s1:='';
+          end;
+        t1:=s1;
+      end;
+    tmin.Append;
+    tmin.Fields[0].asstring:=time1 ;
+    tmin.Fields[1].asfloat:=strtofloat(sw1)*4.008*0.85 ;
+    tmin.Fields[2].asfloat:=0 ;
+    tmin.Fields[3].asfloat:=strtofloat(sw1)*4.509*0.85 ;
+    tmin.Fields[4].asfloat:=strtofloat(sw1)*3.006*0.85 ;
+    tmin.Fields[5].asfloat:=strtofloat(sw1)*4.008 ;
+    tmin.Fields[6].asfloat:=strtofloat(sw1)*2.672 ;
+    tmin.Fields[7].asfloat:=strtofloat(sw1)*4.509 ;
+    tmin.Fields[8].asfloat:=strtofloat(sw1)*3.006 ;
+    tmin.Fields[9].asstring:=sw1 ;
+    tmin.Fields[10].asstring:=t1 ;
+  end;
+  tmin.post;
+  tmin.close;
+
+end;
+
+procedure TForm1.BdeltaimpClick(Sender: TObject);          //匯入台達電檔案
+var
+  FILES:TextFile ;
+  s,time1,sw4:string;
+begin
+  s:='c:\delta.txt';
+  AssignFile(FILES, s);
+  reset(FILES);
+
+  while not EOF(files) do
+    begin
+      Readln(FILES, S);
+      time1:=copy(s,7,4)+copy(s,1,2)+copy(s,4,2)+copy(s,12,2)+copy(s,15,2);
+      sw4:=copy(s,21,4);
+      with tmin do
+        begin
+          active:=true;
+          IndexFieldNames :='time1';
+          setkey;
+          FieldByName('time1').AsString:=time1;
+          GotoKey;
+//          if GotoKey then
+//            begin
+              edit;
+              Fields[4].asstring:=sw4 ;
+//            end;
+//          if not gotokey then
+//            begin
+//              last;
+//              append;
+//              edit;
+//              Fields[0].asstring:=time1 ;
+//              Fields[4].asstring:=sw4 ;
+//            end;
+          post;
+          close;
+        end;
+   end;
+end;
+
+procedure TForm1.BtransferClick(Sender: TObject);            //傳tmin到SQL
+var
+  i:integer;
+begin
+
+  Tmin.Active:=true;
+  ADOTable1.Active:=true;
+  ADOTable1.last;
+  Tmin.SetKey;
+  Tmin.FieldByName('time1').Value:=ADOTable1.FieldByName('time1').Value;
+  tmin.GotoKey;
+  tmin.next;
+  tmin.First;
+  while not Tmin.Eof do
+    begin
+      ADOTable1.Append;
+      ADOTable1.Fields[0].Value:= Tmin.Fields[0].asstring;
+      for i := 1 to 10 do
+        ADOTable1.Fields[i].Value:= Tmin.Fields[i].Value;
+      Tmin.Next;
+    end;
+  ADOTable1.Post;
+  ADOTable1.Close;
+  Tmin.Close;
+
+end;
+
+procedure TForm1.BreculatehourClick(Sender: TObject);     //SQL 小時重計
+var
+  i,j:integer;
+  date1,time1:string;
+begin
+  date1:=ComboBox1.text+ComboBox2.text+ComboBox3.text;
+  ADOConnection1.Connected:=true;
+  for j := 5 to 18 do
+  begin
+  ADOQuery1.close;
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from Tmin');
+  ADOQuery1.sql.add('where time1 > :time1');
+  ADOQuery1.sql.add('and time1 < :time2');
+  ADOQuery1.sql.add('order by time1');
+  if j < 9 then
+    begin
+      ADOQuery1.Parameters.ParamByName('time1').Value:=date1+'0'+inttostr(j)+'00';
+      ADOQuery1.Parameters.ParamByName('time2').Value:=date1+'0'+inttostr(j+1)+'01';
+      ADOQuery1.open;
+
+      for i := 1 to 9 do
+        kwh[i]:=0;
+      ADOQuery1.First;
+      while not ADOQuery1.Eof do
+        begin
+          for i := 1 to 9 do
+            if ADOQuery1.Fields[i].Value > 0 then
+               kwh[i]:=kwh[i]+ADOQuery1.Fields[i].Value/60;         //累計瓦時
+            ADOQuery1.Next;
+        end;
+
+      time1:=date1+'0'+inttostr(j);
+
+      ADOTable2.Active:=true;
+      ADOTable2.last;
+      ADOTable2.Append;
+      ADOTable2.Fields[0].Asstring:=time1;
+      for i := 1 to 9 do
+          ADOTable2.Fields[i].Asfloat:=kwh[i];
+      ADOTable2.Post;
+      ADOTable2.Close;
+    end;
+  if j = 9 then
+    begin
+      ADOQuery1.Parameters.ParamByName('time1').Value:=date1+'0900';
+      ADOQuery1.Parameters.ParamByName('time2').Value:=date1+'1001';
+      ADOQuery1.open;
+
+      for i := 1 to 9 do
+        kwh[i]:=0;
+      ADOQuery1.First;
+      while not ADOQuery1.Eof do
+        begin
+          for i := 1 to 9 do
+            if ADOQuery1.Fields[i].Value > 0 then
+               kwh[i]:=kwh[i]+ADOQuery1.Fields[i].Value/60;         //累計瓦時
+            ADOQuery1.Next;
+        end;
+
+      time1:=date1+'0'+inttostr(j);
+
+      ADOTable2.Active:=true;
+      ADOTable2.last;
+      ADOTable2.Append;
+      ADOTable2.Fields[0].Asstring:=time1;
+      for i := 1 to 9 do
+          ADOTable2.Fields[i].Asfloat:=kwh[i];
+      ADOTable2.Post;
+      ADOTable2.Close;
+    end;
+  if j > 9 then
+    begin
+      ADOQuery1.Parameters.ParamByName('time1').Value:=date1+inttostr(j)+'00';
+      ADOQuery1.Parameters.ParamByName('time2').Value:=date1+inttostr(j+1)+'01';
+      ADOQuery1.open;
+
+      for i := 1 to 9 do
+        kwh[i]:=0;
+      ADOQuery1.First;
+      while not ADOQuery1.Eof do
+        begin
+          for i := 1 to 9 do
+            if ADOQuery1.Fields[i].Value > 0 then
+               kwh[i]:=kwh[i]+ADOQuery1.Fields[i].Value/60;         //累計瓦時
+            ADOQuery1.Next;
+        end;
+
+      time1:=date1+inttostr(j);
+
+      ADOTable2.Active:=true;
+      ADOTable2.last;
+      ADOTable2.Append;
+      ADOTable2.Fields[0].Asstring:=time1;
+      for i := 1 to 9 do
+          ADOTable2.Fields[i].Asfloat:=kwh[i];
+      ADOTable2.Post;
+      ADOTable2.Close;
+    end;
+  end;
+  ADOConnection1.Connected:=false;
+end;
+
+procedure TForm1.BreculdayClick(Sender: TObject);      //SQL 日重計
+var
+  i:integer;
+  date1,time1:string;
+begin
+  date1:=ComboBox1.text+ComboBox2.text+ComboBox3.text;
+  ADOConnection1.Connected:=true;
+
+  ADOQuery1.close;
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from Thour');
+  ADOQuery1.sql.add('where time1 > :time1');
+  ADOQuery1.sql.add('and time1 < :time2');
+  ADOQuery1.sql.add('order by time1');
+  ADOQuery1.Parameters.ParamByName('time1').Value:=date1+'04';
+  ADOQuery1.Parameters.ParamByName('time2').Value:=date1+'19';
+  ADOQuery1.open;
+
+  for i := 1 to 9 do
+      kwh[i]:=0;
+  ADOQuery1.First;
+  while not ADOQuery1.Eof do
+    begin
+      for i := 1 to 9 do
+        if ADOQuery1.Fields[i].Value > 0 then
+           kwh[i]:=kwh[i]+ADOQuery1.Fields[i].Value;         //累計瓦時
+        ADOQuery1.Next;
+    end;
+
+  time1:=date1;
+  ADOTable3.Active:=true;
+  ADOTable3.last;
+  ADOTable3.Append;
+  ADOTable3.Fields[0].Asstring:=time1;
+  for i := 1 to 9 do
+      ADOTable3.Fields[i].Asfloat:=kwh[i];
+  ADOTable3.Post;
+  ADOTable3.Close;
+
+  ADOConnection1.Connected:=false;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);       //SQL 月重計
+var
+  i:integer;
+  date1,time1:string;
+begin
+  date1:=ComboBox1.text+ComboBox2.text;
+  ADOConnection1.Connected:=true;
+
+  ADOQuery1.close;
+  ADOQuery1.SQL.Clear;
+  ADOQuery1.SQL.add('select * from Tday');
+  ADOQuery1.sql.add('where time1 > :time1');
+  ADOQuery1.sql.add('and time1 < :time2');
+  ADOQuery1.sql.add('order by time1');
+  ADOQuery1.Parameters.ParamByName('time1').Value:=date1+'00';
+  ADOQuery1.Parameters.ParamByName('time2').Value:=date1+'32';
+  ADOQuery1.open;
+
+  for i := 1 to 9 do
+      kwh[i]:=0;
+  ADOQuery1.First;
+  while not ADOQuery1.Eof do
+    begin
+      for i := 1 to 9 do
+        if ADOQuery1.Fields[i].Value > 0 then
+           kwh[i]:=kwh[i]+ADOQuery1.Fields[i].Value;         //累計瓦時
+        ADOQuery1.Next;
+    end;
+
+  time1:=date1;
+  ADOTable4.Active:=true;
+  ADOTable4.last;
+  ADOTable4.Append;
+  ADOTable4.Fields[0].Asstring:=time1;
+  for i := 1 to 9 do
+      ADOTable4.Fields[i].Asfloat:=kwh[i];
+  ADOTable4.Post;
+  ADOTable4.Close;
+
+  ADOConnection1.Connected:=false;
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);       //  SQL to 本機
+var
+  i:integer;
+begin
+
+  Thour.Active:=true;
+  ADOTable2.Active:=true;
+  Thour.last;
+  ADOTable2.first;
+  while not ADOTable2.Eof do
+    begin
+      Thour.Append;
+      Thour.Fields[0].Value:= ADOTable2.Fields[0].asstring;
+      for i := 1 to 10 do
+        Thour.Fields[i].Value:= ADOTable2.Fields[i].Value/1000;
+      ADOTable2.Next;
+    end;
+ Thour.Post;
+ Thour.Close;
+ ADOTable2.Close;
+
+  Tday.Active:=true;
+  ADOTable3.Active:=true;
+  ADOTable3.first;
+  Tday.First;
+  while not ADOTable3.Eof do
+    begin
+      Tday.Append;
+      Tday.Fields[0].Value:= ADOTable3.Fields[0].asstring;
+      for i := 1 to 10 do
+        Tday.Fields[i].Value:= ADOTable3.Fields[i].Value/1000;
+      ADOTable3.Next;
+    end;
+ Tday.Post;
+ Tday.Close;
+ ADOTable3.Close;
+
+  Tmonth.Active:=true;
+  ADOTable4.Active:=true;
+  ADOTable4.first;
+  Tmonth.First;
+  while not ADOTable4.Eof do
+    begin
+      Tmonth.Append;
+      Tmonth.Fields[0].Value:= ADOTable4.Fields[0].asstring;
+      for i := 1 to 10 do
+        Tmonth.Fields[i].Value:= ADOTable4.Fields[i].Value/1000;
+      ADOTable4.Next;
+    end;
+ Tmonth.Post;
+ Tmonth.Close;
+ ADOTable4.Close;
+{
+  Tyear.Active:=true;
+  ADOTable5.Active:=true;
+  ADOTable5.first;
+  Tyear.First;
+  while not ADOTable5.Eof do
+    begin
+      Tyear.Append;
+      Tyear.Fields[0].Value:= ADOTable5.Fields[0].asstring;
+      for i := 1 to 10 do
+        Tyear.Fields[i].Value:= ADOTable5.Fields[i].Value/1000;
+      ADOTable3.Next;
+    end;
+ Tyear.Post;
+ Tyear.Close;
+ ADOTable5.Close;
+}
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+var
+  i,j:integer;
+  time1,time2,day1:string;
+begin
+  day1:=ComboBox1.text+ComboBox2.text+ComboBox3.text;
+  for j := 5 to 19 do               //5-19HR
+    begin
+      if j < 9 then
+        begin
+          time1:=day1+'0'+inttostr(j)+'00';
+          time2:=day1+'0'+inttostr(j+1)+'01';
+        end;
+      if j = 9 then
+        begin
+          time1:=day1+'0'+inttostr(j)+'00';
+          time2:=day1+'10'+'01';
+        end;
+      if j > 9 then
+        begin
+          time2:=day1+inttostr(j)+'00';
+          time2:=day1+inttostr(j+1)+'01';
+        end;
+      for i := 1 to 8 do
+          kwh[i]:=0;
+      for i := 1 to invno do
+        begin
+          query2.close;                                         //找出小時內所有 etotal1 並按時間排序
+          query2.SQL.Clear;
+          query2.SQL.add('select Time1, ETotal from tdatamin');
+          query2.sql.add('where time1 > :t1');
+          query2.sql.add('and time1 < :t2');
+          query2.sql.add('and invno = :invno');
+          query2.sql.add('order by time1');
+          query2.parambyname('t1').Asstring:=time1;
+          query2.parambyname('t2').Asstring:=time2;
+          query2.parambyname('invno').Asinteger:=i;
+          query2.open;
+          if not query2.Eof then
+            begin
+              query2.First;
+              kwh[i]:=query2.Fields[1].Value;
+              Memo1.lines.add(floattostr(kwh[i]));
+              query2.last;                                            
+              Memo1.lines.add(floattostr(query2.Fields[1].Value));
+              kwh[i]:=query2.Fields[1].Value-kwh[i];                 //相減取得  kwh
+              Memo1.lines.add(floattostr(kwh[i]));
+              Memo1.lines.add('');
+            end;
+        end;
+
+    Thour.active:=true;
+    Thour.SetKey;
+    Thour.FieldByName('time1').Value:=time1;                    //找到時間
+    Thour.GotoKey;
+    Thour.edit;
+    for i := 1 to 8 do
+        Thour.Fields[i].value:=kwh[i];                          //更新資料
+    Thour.Post;
+    Thour.close;
+  end;
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  i:integer;
+  time1:string;
+begin
+  time1:=ComboBox1.text+ComboBox2.text;
+  for i := 1 to 8 do
+      kwh[i]:=0;
+  for i := 1 to invno do
+    begin
+      query2.close;
+      query2.SQL.Clear;
+      query2.SQL.add('select Time1, ETotal from tdatamin');
+      query2.sql.add('where time1 > :t1');
+      query2.sql.add('and time1 < :t2');
+      query2.sql.add('and invno = :invno');
+      query2.sql.add('order by time1');
+      query2.parambyname('t1').Asstring:=time1+'000000';
+      query2.parambyname('t2').Asstring:=time1+'320000';
+      query2.parambyname('invno').Asinteger:=i;
+      query2.open;
+      if not query2.Eof then
+        begin
+          query2.First;
+          kwh[i]:=query2.Fields[1].Value;
+          query2.last;
+          kwh[i]:=query2.Fields[1].Value-kwh[i];
+        end;
+    end;
+
+    Tmonth.active:=true;
+    Tmonth.SetKey;
+    Tmonth.FieldByName('time1').Value:=time1;
+    Tmonth.GotoKey;
+    Tmonth.edit;
+    for i := 1 to 8 do
+        Tmonth.Fields[i].value:=kwh[i];
+    Tmonth.Post;
+    Tmonth.close;
+
+end;
+
+procedure TForm1.Button4Click(Sender: TObject);
+var
+  i:integer;
+  time1:string;
+begin
+  time1:=ComboBox1.text;
+  for i := 1 to 8 do
+      kwh[i]:=0;
+  for i := 1 to invno do
+    begin
+      query2.close;
+      query2.SQL.Clear;
+      query2.SQL.add('select Time1, ETotal from tdatamin');
+      query2.sql.add('where time1 > :t1');
+      query2.sql.add('and time1 < :t2');
+      query2.sql.add('and invno = :invno');
+      query2.sql.add('order by time1');
+      query2.parambyname('t1').Asstring:=time1+'00000000';
+      query2.parambyname('t2').Asstring:=time1+'13000000';
+      query2.parambyname('invno').Asinteger:=i;
+      query2.open;
+      if not query2.Eof then
+        begin
+          query2.First;
+          kwh[i]:=query2.Fields[1].Value;
+          query2.last;
+          kwh[i]:=query2.Fields[1].Value-kwh[i];
+        end;
+    end;
+
+    Tyear.active:=true;
+    Tyear.SetKey;
+    Tyear.FieldByName('time1').Value:=time1;
+    Tyear.GotoKey;
+    Tyear.edit;
+    for i := 1 to 8 do
+        Tyear.Fields[i].value:=kwh[i];
+    Tyear.Post;
+    Tyear.close;
+end;
+
+procedure TForm1.Button6Click(Sender: TObject);
+var
+  i,j:integer;
+  day1,time1,time2:string;
+begin
+  day1:=ComboBox1.text+ComboBox2.text+ComboBox3.text;
+  for j := 5 to 19 do
+    begin
+      if j < 9 then
+        begin
+          time1:=day1+'0'+inttostr(j)+'00';
+          time2:=day1+'0'+inttostr(j+1)+'01';
+        end;
+      if j = 9 then
+        begin
+          time1:=day1+'0900';
+          time2:=day1+'1001';
+        end;
+      if j > 9 then
+        begin
+          time1:=day1+inttostr(j)+'00';
+          time2:=day1+inttostr(j+1)+'01';
+        end;
+      Query1.close;
+      Query1.SQL.Clear;
+      Query1.SQL.add('select * from Tmin');
+      Query1.sql.add('where time1 > :time1');
+      Query1.sql.add('and time1 < :time2');
+      Query1.sql.add('order by time1');
+      Query1.ParamByName('time1').Value:=time1;
+      Query1.ParamByName('time2').Value:=time2;
+      Query1.open;
+      for i := 1 to 9 do
+          kwh[i]:=0;
+      Query1.First;
+      while not Query1.Eof do
+        begin
+          for i := 1 to 9 do
+             if Query1.Fields[i].Value > 0 then
+                kwh[i]:=kwh[i]+Query1.Fields[i].Value/60;         //累計瓦時
+              Query1.Next;
+        end;
+
+      Thour.Active:=true;
+      Thour.SetKey;
+      Thour.FieldByName('time1').Value:=time1;                    //找到時間
+      Thour.GotoKey;
+      Thour.edit;
+      for i := 1 to 9 do
+          Thour.Fields[i].Asfloat:=kwh[i]/1000;
+      Thour.Post;
+      Thour.Close;
+    end;
+end;
+
+procedure TForm1.Button7Click(Sender: TObject);
+var
+  i:integer;
+  day1:string;
+begin
+  day1:=ComboBox1.text+ComboBox2.text+ComboBox3.text;
+
+  Query1.close;
+  Query1.SQL.Clear;
+  Query1.SQL.add('select * from Thour');
+  Query1.sql.add('where time1 > :time1');
+  Query1.sql.add('and time1 < :time2');
+  Query1.sql.add('order by time1');
+  Query1.ParamByName('time1').Value:=day1+'04';
+  Query1.ParamByName('time2').Value:=day1+'19';
+  Query1.open;
+
+  for i := 1 to 9 do
+      kwh[i]:=0;
+  Query1.First;
+  while not Query1.Eof do
+    begin
+      for i := 1 to 9 do
+        if Query1.Fields[i].Value > 0 then
+           kwh[i]:=kwh[i]+Query1.Fields[i].Value;         //累計瓦時
+        Query1.Next;
+    end;
+
+  Tday.Active:=true;
+  Tday.SetKey;
+  Tday.FieldByName('time1').Value:=day1;                    //找到時間
+  Tday.GotoKey;
+  Tday.edit;
+  for i := 1 to 9 do
+      Tday.Fields[i].Asfloat:=kwh[i];
+  Tday.Post;
+  Tday.Close;
+end;
+
+procedure TForm1.Button8Click(Sender: TObject);
+var
+  i:integer;
+  month1:string;
+begin
+  month1:=ComboBox1.text+ComboBox2.text;
+
+  Query1.close;
+  Query1.SQL.Clear;
+  Query1.SQL.add('select * from Tday');
+  Query1.sql.add('where time1 > :time1');
+  Query1.sql.add('and time1 < :time2');
+  Query1.sql.add('order by time1');
+  Query1.ParamByName('time1').Value:=month1+'00';
+  Query1.ParamByName('time2').Value:=month1+'32';
+  Query1.open;
+
+  for i := 1 to 9 do
+      kwh[i]:=0;
+  Query1.First;
+  while not Query1.Eof do
+    begin
+      for i := 1 to 9 do
+        if Query1.Fields[i].Value > 0 then
+           kwh[i]:=kwh[i]+Query1.Fields[i].Value;         //累計瓦時
+        Query1.Next;
+    end;
+
+  Tmonth.Active:=true;
+  Tmonth.SetKey;
+  Tmonth.FieldByName('time1').Value:=month1;                    //找到時間
+  Tmonth.GotoKey;
+  Tmonth.edit;
+  for i := 1 to 9 do
+      Tmonth.Fields[i].Asfloat:=kwh[i];
+  Tmonth.Post;
+  Tmonth.Close;
+end;
+
+
+procedure TForm1.Button9Click(Sender: TObject);
+var
+  i:integer;
+  year1:string;
+begin
+  year1:=ComboBox1.text;
+
+  Query1.close;
+  Query1.SQL.Clear;
+  Query1.SQL.add('select * from Tmonth');
+  Query1.sql.add('where time1 > :time1');
+  Query1.sql.add('and time1 < :time2');
+  Query1.sql.add('order by time1');
+  Query1.ParamByName('time1').Value:=year1+'00';
+  Query1.ParamByName('time2').Value:=year1+'13';
+  Query1.open;
+
+  for i := 1 to 9 do
+      kwh[i]:=0;
+  Query1.First;
+  while not Query1.Eof do
+    begin
+      for i := 1 to 9 do
+        if Query1.Fields[i].Value > 0 then
+           kwh[i]:=kwh[i]+Query1.Fields[i].Value;         //累計瓦時
+        Query1.Next;
+    end;
+
+  Tyear.Active:=true;
+  Tyear.SetKey;
+  Tyear.FieldByName('time1').Value:=year1;                    //找到時間
+  Tyear.GotoKey;
+  Tyear.edit;
+  for i := 1 to 9 do
+      Tyear.Fields[i].Asfloat:=kwh[i];
+  Tyear.Post;
+  Tyear.Close;
+end;
+
+procedure TForm1.Button10Click(Sender: TObject);
+var
+  i:integer;
+  time1:string;
+begin
+  time1:=ComboBox1.text+ComboBox2.text+ComboBox3.text;
+  for i := 1 to invno do
+    begin
+      query2.close;
+      query2.SQL.Clear;
+      query2.SQL.add('select Time1, ETotal from tdatamin');
+      query2.sql.add('where time1 > :t1');
+      query2.sql.add('and time1 < :t2');
+      query2.sql.add('and invno = :invno');
+      query2.sql.add('order by time1');
+      query2.parambyname('t1').Asstring:=time1+'0000';
+      query2.parambyname('t2').Asstring:=time1+'2400';
+      query2.parambyname('invno').Asinteger:=2;
+      query2.open;
+      if not query2.Eof then
+        begin
+          query2.First;
+          Tmin.active:=true;
+          Tmin.SetKey;
+          Tmin.FieldByName('time1').Value:=query2.Fields[0].Value;
+          Tmin.GotoKey;
+          Tmin.edit;
+          Tmin.Fields[2].value:=query2.Fields[1].Value;
+          memo1.lines.add(floattostr(query2.Fields[1].Value));
+          query2.next;
+        end;
+    end;
+
+    Tmin.Post;
+    Tmin.close;
+end;
+
+procedure TForm1.Button11Click(Sender: TObject);
+var
+  i,j:real;
+  s,s1:string;
+begin
+  Table1.active :=true;
+  Table1.first;
+  while not table1.eof do
+    begin
+      Table1.edit;
+      i:= Table1.fields[0].value;
+      if i < 10 then
+        begin
+          s:=copy(floattostr(i),3,2);
+          s1:=copy(floattostr(i),0,1);
+        end;
+      if i >= 10 then
+        begin
+          s:=copy(floattostr(i),4,2);
+          s1:=copy(floattostr(i),0,2);
+        end;
+      j:=strtoint(s1)*100+strtoint(s)*0.6;
+      Table1.fields[0].value:=j;
+      Table1.next;
+    end;
+  table1.close;
+end;
+
+procedure TForm1.Button12Click(Sender: TObject);
+begin
+  Thour.Active:=true;
+  ADOTtraffic.Active:=true;
+//  ADOTtraffic.last;
+//  Thour.SetKey;
+//  Thour.FieldByName('time1').Value:=ADOTtraffic.FieldByName('time1').Value;
+//  Thour.GotoKey;
+//  Thour.next;
+  Thour.First;
+  while not Thour.Eof do
+    begin
+      if Thour.Fields[4].asfloat <> 0 then
+        begin
+          ADOTtraffic.Append;
+          ADOTtraffic.Fields[0].Value:= 'Delta PV3.6';
+          ADOTtraffic.Fields[1].Value:= copy(Thour.Fields[0].asstring,3,8) +'1';
+          if Thour.Fields[4].asfloat >= 1 then ADOTtraffic.Fields[2].Value:= Thour.Fields[4].Value;
+          if Thour.Fields[4].asfloat < 1 then  ADOTtraffic.Fields[2].Value:=1;
+        end;
+      Thour.Next;
+    end;
+  ADOTtraffic.Post;
+  ADOTtraffic.Close;
+  Thour.Close;
+end;
+
+procedure TForm1.BFTPClick(Sender: TObject);
+var
+  i:integer;
+  str,day1,s,s1,s2,s3:string;
+  FILES:TextFile ;
+begin
+  str:= datetostr(date);
+  day1:=copy(str,1,4) + copy(str,6,2)+ copy(str,9,2);
+//  day1:='20070707';
+  s1:='962008';
+  s2:=day1;
+  s3:='pvdb.txt';
+  s:=s1+'_'+s2+'_'+s3;
+  Filename:=s;
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+
+  for i := 1 to invno do
+    begin
+      query1.close;
+      query1.SQL.Clear;
+      query1.SQL.add('select * from tdatamin');
+      query1.sql.add('where time1 > :time1');
+      query1.sql.add('and time1 < :time2');
+      query1.sql.add('and invno = :invno');
+      query1.sql.add('order by time1');
+      query1.parambyname('time1').Asstring:=day1+'0000';
+      query1.parambyname('time2').Asstring:=day1+'2400';
+      query1.parambyname('invno').Asinteger:=i;
+      query1.open;
+
+      while not query1.Eof do
+        begin
+          s:='<root><rec database_type="sql" contract_id="962008" table="raw_data_luckypowertech" database="luckypowertech" pv_array="luckypowertech'+ inttostr(i)+'" backup_interval="60" ';
+          s:=s + 'rec_date="'+copy(query1.Fields[0].AsString,1,4)+'/'+copy(query1.Fields[0].AsString,5,2)+'/'+copy(query1.Fields[0].AsString,7,2);
+          s:=s + '" rec_time="'+copy(query1.Fields[0].AsString,9,2)+':'+copy(query1.Fields[0].AsString,11,2)+':00';
+          s:=s + '" Vsolar="'+query1.Fields[11].AsString;
+          s:=s + '" Isolar="'+query1.Fields[14].AsString;
+          s:=s + '" Psolar="'+query1.Fields[17].AsString;
+          s:=s + '" Esolar="'+query1.Fields[18].AsString;
+          s:=s + '" Tm1="'+query1.Fields[20].AsString;
+          s:=s + '" sun="'+query1.Fields[22].AsString;
+          s:=s + '" Vu="'+query1.Fields[5].AsString;
+          s:=s + '" Iu="'+query1.Fields[4].AsString;
+          s:=s + '" Pu="'+query1.Fields[7].AsString;
+          s:=s + '" Eu="'+query1.Fields[9].AsString;
+          s:=s + '" /></root>';
+          writeln(FILES,S);
+          query1.Next;
+        end;
+      query1.close;
+    end;
+  CloseFile(FILES);
+  IdFTP1.Disconnect;
+  IdFTP1.Connect(true);
+  IdFTP1.Put(Filename,Filename,true);
+end;
+
+procedure TForm1.Button13Click(Sender: TObject);
+var
+  filename:string;
+begin
+  filename:='min.bmp';
+  DBChart1.SaveToBitmapFile(filename);
+  filename:='min1.jpg';
+  DBChart1.SaveToMetafile(filename);
+  filename:='hour.bmp';
+  DBChart2.SaveToBitmapFile(filename);
+  filename:='day.bmp';
+  DBChart3.SaveToBitmapFile(filename);
+  filename:='month.bmp';
+  DBChart4.SaveToBitmapFile(filename);
+  filename:='year.bmp';
+  DBChart5.SaveToBitmapFile(filename);
+end;
+
+procedure TForm1.Image3Click(Sender: TObject);
+begin
+//  form1.WindowState:= wsMinimized;
+end;
+
+procedure TForm1.Button14Click(Sender: TObject);
+var
+  i,h:integer;
+  str,year1,min1,day1,month1,hour1:string;
+  f1,f2,f3,f4:real;
+begin
+  query2.close;
+  query2.SQL.Clear;
+  query2.SQL.add('select time1, rad1 from tdatamin');
+  query2.sql.add('where time1 > :time1');
+  query2.sql.add('and time1 < :time2');
+  query2.sql.add('and invno = 4');
+  query2.sql.add('order by time1');
+  query2.parambyname('time1').Asstring:=ComboBox1.text+ComboBox2.text+'000000';
+  query2.parambyname('time2').Asstring:=ComboBox1.text+ComboBox2.text+'310000';
+  query2.open;
+  query2.First;
+  f1:=0;
+  f2:=0;
+  f3:=0;
+  f4:=0;
+  while not query2.Eof do
+     begin
+       f1:=query2.Fields[1].AsFloat;
+       if f1 > 0 then
+          f3:=f3+(f1/60);
+       query2.Next;
+       f2:=query2.Fields[1].AsFloat;
+       f4:=f4+((f1+f2)/60/2);
+     end;
+  memo1.lines.add('AVG RAD  kw/m2-day');
+  memo1.lines.add(floattostr(f3/30/1000));
+  memo1.lines.add(floattostr(f4/30/1000));
+end;
+
+procedure TForm1.Label1Click(Sender: TObject);
+begin
+  form1.WindowState:= wsMinimized;
+end;
+
+end.
