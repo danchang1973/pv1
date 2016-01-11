@@ -1,0 +1,23 @@
+procedure TModLinkDemoMainForm.ReadInputRegistersButtonClick(Sender: TObject);
+var
+  StartReg, RegCount: Word;
+  ID: Cardinal;
+begin
+  ValidateRegisterReadGroupBox;
+  StartReg := Word(StrToInt(ReadStartRegEdit.Text));
+  RegCount := Word(StrToInt(ReadRegCountEdit.Text));
+  ID := ModbusClient1.ReadInputRegisters(1030, 1);
+  ID := ModbusClient1.ReadInputRegisters(1033, 1);
+  ID := ModbusClient1.ReadInputRegisters(1034, 1);
+  ID := ModbusClient1.ReadInputRegisters(1035, 1);
+  ID := ModbusClient1.ReadInputRegisters(1036, 1);
+  ID := ModbusClient1.ReadInputRegisters(1037, 1);
+  ID := ModbusClient1.ReadInputRegisters(1038, 1);
+  ID := ModbusClient1.ReadInputRegisters(1039, 1);
+  ID := ModbusClient1.ReadInputRegisters(1040, 1);
+  ID := ModbusClient1.ReadInputRegisters(1044, 1);
+  ID := ModbusClient1.ReadInputRegisters(1045, 1);
+  ID := ModbusClient1.ReadInputRegisters(1047, 1);
+  ID := ModbusClient1.ReadInputRegisters(1048, 1);
+  ID := ModbusClient1.ReadInputRegisters(1049, 1);
+end;
