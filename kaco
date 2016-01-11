@@ -1,0 +1,231 @@
+unit kaco;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, Spcomm, CommDrv;
+
+type
+  TForm1 = class(TForm)
+    Button1: TButton;
+    Button2: TButton;
+    Memo1: TMemo;
+    Timer1: TTimer;
+    ComboBox1: TComboBox;
+    Bread: TButton;
+    function ReturnTime: double ;
+    procedure Button1Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BreadClick(Sender: TObject);
+    procedure MsComm1OnComm(Sender: TObject; DataPtr: Pointer;
+      DataSize: Integer);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  viewstring:string;
+  i,kw,errorcode:integer;
+  kw1,kw2,t,portn:string;
+  pac,iac,vac,fac,zac,vpv,vpv1,vpv2,vpv3,ipv1,ipv2,ipv3,ppv1,ppv2,ppv3,temp,etoday,etotal,htotal:string;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  bread.click;
+  Timer1.Enabled:=true;
+//  Form1.WindowState:=wsMinimized;
+
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+var
+  FILES:textfile;
+  Filename:string;
+begin
+  portn:=ComboBox1.text;
+  if strtofloat(pac)>0 then
+  begin
+  try
+    Filename:='inv1.dat';
+    if not Fileexists(Filename) then
+       filecreate(Filename);
+    AssignFile(FILES, Filename);
+    rewrite(FILES);
+    writeln(FILES, pac);
+    writeln(FILES, temp);
+    writeln(FILES, vpv1);
+    writeln(FILES, vpv2);
+    writeln(FILES, vpv3);
+    writeln(FILES, ipv1);
+    writeln(FILES, ipv2);
+    writeln(FILES, ipv3);
+    writeln(FILES, ppv1);
+    writeln(FILES, ppv2);
+    writeln(FILES, ppv3);
+    writeln(FILES, iac);
+    writeln(FILES, vac);
+    writeln(FILES, fac);
+    writeln(FILES, zac);
+    writeln(FILES, etotal);
+    writeln(FILES, htotal);
+    writeln(FILES, portn);
+    CloseFile(FILES)
+  except
+  end;
+  end;
+  Bread.Click ;
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  Timer1.Enabled:=false;
+  MsComm1.PortOpen:=false;
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
+var
+  FILES:textfile;
+  Filename,s:string;
+  i:integer;
+begin
+  pac:='0';
+  iac:='0';
+  vac:='0';
+  zac:='0';
+  fac:='0';
+  vpv1:='0';
+  vpv2:='0';
+  vpv3:='0';
+  ipv1:='0';
+  ipv2:='0';
+  ipv3:='0';
+  ppv1:='0';
+  ppv2:='0';
+  ppv3:='0';
+  temp:='0';
+  etotal:='0';
+  etoday:='0';
+  htotal:='0';
+
+  Filename:='inv1.dat';
+  if Fileexists(Filename) then
+    begin
+      AssignFile(FILES, Filename);
+      reset(FILES);
+      for i := 1 to 17 do
+        readln(FILES, s);
+      readln(FILES, portn);
+      if portn='' then portn:='1';
+      ComboBox1.text:=portn;
+      CloseFile(FILES);
+    end;
+
+  if not Fileexists(Filename) then
+     filecreate(Filename);
+  Button1.Click;
+end;
+
+procedure TForm1.BreadClick(Sender: TObject);
+var
+  outstr:string[255]  ;
+  echo:string[8] ;
+  c:double ;
+begin
+  memo1.clear;
+  outstr:='';
+  try
+    with MsComm1 do
+    begin
+      PortOpen:=false;
+      commport:=strtoint(ComboBox1.Text);
+      PortOpen:=True ;
+      inputLen:=8 ;
+      c:=ReturnTime ;
+
+      repeat
+        echo:=Input;
+        outstr:=outstr+echo;
+      until (ReturnTime-c>12) or (length(outstr)>79) ;
+
+      memo1.lines.add(outstr);
+
+      IF length(outstr)>55 THEN
+        BEGIN
+          vpv1:=copy(outstr,25,5);
+          ipv1:=copy(outstr,31,5);
+          ppv1:=copy(outstr,38,5);
+          vac:=copy(outstr,43,5);
+          iac:=copy(outstr,49,6);
+          memo1.lines.add(vpv1 + '  V  VPV');
+          memo1.lines.add(ipv1 + '  A  IPV');
+          memo1.lines.add(ppv1+'  W  PPV');
+          memo1.lines.add(vac+ '  V  VAC');
+          memo1.lines.add(iac+ '  A  IAC');
+          Timer1.Enabled:=false;
+          Timer1.Interval:=9000;
+          Timer1.Enabled:=true;
+//          Form1.WindowState:=wsMinimized;
+        END;
+      IF length(outstr)>79 THEN
+        BEGIN
+          pac:=copy(outstr,56,5);
+          temp:=copy(outstr,62,2);
+          etoday:=copy(outstr,66,5);
+//          etotal:=copy(outstr,74,5);     // 2009.7.21 > 10000      
+          etotal:=copy(outstr,73,6);
+          memo1.lines.add(pac+ '  W PAC');
+          memo1.lines.add(temp+ '  deg.C');
+          memo1.lines.add(etoday + '  W  etoday');
+          memo1.lines.add(etotal+ '  KW  etotal');
+          Timer1.Enabled:=false;
+          Timer1.Interval:=9000;
+          Timer1.Enabled:=true;
+          Form1.WindowState:=wsMinimized;
+          errorcode:= 0;
+        END;
+      IF length(outstr) <> 80 THEN
+         begin
+           errorcode:= errorcode+1;
+           memo1.lines.add(inttostr(errorcode));
+           if errorcode > 5 then
+             begin
+               Timer1.Enabled:=false;
+               Timer1.Interval:=errorcode*10000;
+               if Timer1.Interval > 600000 then  Timer1.Interval:=600000 ;
+               Timer1.Enabled:=true;
+             end;
+         end;
+    end;
+  except
+  end;
+end;
+
+function TForm1.ReturnTime: double ;                 //計算comport回應時間
+var
+  Present:TDatetime ;
+   h,m,s,ms:word ;
+begin
+  Present:=Now ;
+  DecodeTime(Present, h, m ,s,ms);
+  ReturnTime:=h*24*6+m*60+S ;
+end ;
+
+procedure TForm1.MsComm1OnComm(Sender: TObject; DataPtr: Pointer;
+  DataSize: Integer);
+begin
+//
+end;
+
+end.
