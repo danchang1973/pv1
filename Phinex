@@ -1,0 +1,329 @@
+unit phinex;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
+  Dialogs, ExtCtrls, StdCtrls, SPComm, CommDrv;
+
+type
+  TForm1 = class(TForm)
+    Comm1: TComm;
+    Button1: TButton;
+    Button2: TButton;
+    Memo1: TMemo;
+    Timer1: TTimer;
+    Label1: TLabel;
+    Label4: TLabel;
+    ComboBox1: TComboBox;
+    MsComm1: TMsCommDriver;
+    Bread: TButton;
+    procedure Button3Click(Sender: TObject);
+    procedure Comm1ReceiveData(Sender: TObject; Buffer: Pointer;
+      BufferLength: Word);
+    function ReturnTime: double ;
+    procedure Button1Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure BreadClick(Sender: TObject);
+
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+  viewstring:string;
+  i,kw,errorcode:integer;
+  rbuf:array[0..99] of byte;
+  sbuf:array[0..11] of byte;
+  kw1,kw2,t,portn:string;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button3Click(Sender: TObject);
+var
+  i:integer;
+  commflg:boolean;
+  t:string;
+begin
+  Comm1.StopComm;
+  if ComboBox1.Text='2' then Comm1.CommName:='COM2';
+  if ComboBox1.Text='3' then Comm1.CommName:='COM3';
+  if ComboBox1.Text='4' then Comm1.CommName:='COM4';
+  if ComboBox1.Text='5' then Comm1.CommName:='COM5';
+  if ComboBox1.Text='6' then Comm1.CommName:='COM6';
+  if ComboBox1.Text='7' then Comm1.CommName:='COM7';
+  if ComboBox1.Text='8' then Comm1.CommName:='COM8';
+  Comm1.StartComm;
+  sleep(20);
+
+  Memo1.Clear;
+
+  sbuf[0]:=$AA;
+  sbuf[1]:=$AA;
+  sbuf[2]:=$01;
+  sbuf[3]:=$00;
+  sbuf[4]:=$00;
+  sbuf[5]:=$00;
+  sbuf[6]:=$00;
+  sbuf[7]:=$00;
+  sbuf[8]:=$00;
+  sbuf[9]:=$01;
+  sbuf[10]:=$55;
+
+  viewstring:='' ;
+  commflg:=true;
+
+  for i:=0 to 10 do
+    begin
+      if not comm1.writecommdata(@sbuf[i],1) then
+        begin
+          commflg:=false;
+          break;
+        end;
+      //發送時位元組間的延時
+      sleep(20);
+      viewstring:=viewstring+ inttohex(sbuf[i],2);
+    end;
+
+  viewstring:='發送'+ viewstring;
+  memo1.lines.add(viewstring);
+  memo1.lines.add('' );
+  if not commflg then messagedlg('發送失敗 !' ,mterror,[mbyes],0);
+
+  sbuf[0]:=$AA;
+  sbuf[1]:=$AA;
+  sbuf[2]:=$01;
+  sbuf[3]:=$00;
+  sbuf[4]:=$00;
+  sbuf[5]:=$00;
+  sbuf[6]:=$00;
+  sbuf[7]:=$00;
+  sbuf[8]:=$00;
+  sbuf[9]:=$01;
+  sbuf[10]:=$55;
+
+  viewstring:='' ;
+  commflg:=true;
+
+  for i:=0 to 10 do
+    begin
+      if not comm1.writecommdata(@sbuf[i],1) then
+        begin
+          commflg:=false;
+          break;
+        end;
+      //發送時位元組間的延時
+      sleep(20);
+      viewstring:=viewstring+ inttohex(sbuf[i],2);
+    end;
+
+  viewstring:='發送'+ viewstring;
+  memo1.lines.add(viewstring);
+  memo1.lines.add('' );
+  if not commflg then messagedlg('發送失敗 !' ,mterror,[mbyes],0);
+
+  sbuf[0]:=$AA;
+  sbuf[1]:=$AA;
+  sbuf[2]:=$01;
+  sbuf[3]:=$00;
+  sbuf[4]:=$00;
+  sbuf[5]:=$01;
+  sbuf[6]:=$01;
+  sbuf[7]:=$02;
+  sbuf[8]:=$00;
+  sbuf[9]:=$01;
+  sbuf[10]:=$59;
+
+  viewstring:='' ;
+  commflg:=true;
+
+  for i:=0 to 10 do
+    begin
+      if not comm1.writecommdata(@sbuf[i],1) then
+        begin
+          commflg:=false;
+          break;
+        end;
+      //發送時位元組間的延時
+      sleep(20);
+      viewstring:=viewstring+ inttohex(sbuf[i],2);
+    end;
+   sleep(200);
+  viewstring:='發送'+ viewstring;
+  memo1.lines.add(viewstring);
+  memo1.lines.add('' );
+  if not commflg then messagedlg('發送失敗 !' ,mterror,[mbyes],0);
+
+  t:=timetostr(now);
+  memo1.lines.add(t);
+
+end;
+
+procedure TForm1.Comm1ReceiveData(Sender: TObject; Buffer: Pointer;
+  BufferLength: Word);
+//var
+//  v1,s,t:string;
+//  j:array[1..4] of string ;
+//  k:array[1..4] of integer ;
+//  i:integer;
+begin
+{
+//  kw:=0;
+  viewstring:='' ;
+//  v1:='';
+
+  move(buffer^,pchar(@rbuf)^,bufferlength);
+
+  for i:=1 to bufferlength do
+    begin
+      viewstring:=viewstring+ inttohex(rbuf[i],bufferlength)+'' ;
+    end;
+
+  memo1.lines.add(viewstring);
+
+  if bufferlength > 61 then
+    begin
+      Timer1.Interval:=10000;
+//      s:='$'+copy(v1,1,3);
+//      kw:=strtoint(s);
+      if (rbuf[31]*256+rbuf[32]) < 5000 then
+        kw:=(rbuf[31]*256+rbuf[32]);
+      memo1.lines.add(inttostr(kw));
+      Comm1.StopComm;
+    end;
+//  memo1.lines.add(inttostr(rbuf[31]*256+rbuf[32]));
+
+  Label1.Caption:=inttostr(kw);
+  Label4.Caption:='w pac';
+}
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  bread.click;
+  Timer1.Enabled:=true;
+//  Form1.WindowState:=wsMinimized;
+
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+var
+  FILES:textfile;
+  Filename:string;
+begin
+  portn:=ComboBox1.text;
+  try
+  Filename:='c:\kaco.dat';
+  if not Fileexists(Filename) then
+     filecreate(Filename);
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  writeln(FILES, kw1);
+  writeln(FILES, kw2);
+  writeln(FILES, t);
+  writeln(FILES, portn);
+  CloseFile(FILES);
+  except
+  end;
+  Bread.Click ;
+
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+begin
+  Timer1.Enabled:=false;
+  MsComm1.PortOpen:=false;
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
+var
+  FILES:textfile;
+  Filename:string;
+begin
+  Filename:='c:\kaco.dat';
+  if Fileexists(Filename) then
+    begin
+      AssignFile(FILES, Filename);
+      reset(FILES);
+      readln(FILES, kw1);
+      readln(FILES, kw2);
+      readln(FILES, t);
+      readln(FILES, portn);
+      if portn='' then portn:='1';
+      ComboBox1.text:=portn;
+      CloseFile(FILES);
+    end;
+
+  if not Fileexists(Filename) then
+     filecreate(Filename);
+end;
+
+procedure TForm1.BreadClick(Sender: TObject);
+var
+  outstr:string[255]  ;
+  echo:string[8] ;
+  c:double ;
+begin
+  memo1.clear;
+  try
+  with MsComm1 do
+    begin
+      PortOpen:=false;
+      commport:=strtoint(ComboBox1.Text);
+      PortOpen:=True ;
+      inputLen:=8 ;
+      c:=ReturnTime ;
+
+      Repeat
+        echo:=Input;
+        outstr:=outstr+echo;
+      until (ReturnTime-c>11) or (length(outstr)>79) ;
+      memo1.lines.add(outstr);
+
+      IF length(outstr)=80 THEN
+        BEGIN
+          kw1:=copy(outstr,38,4);
+          kw2:=copy(outstr,56,4);
+          t:=copy(outstr,62,2);
+          memo1.lines.add(kw1);
+          memo1.lines.add(kw2);
+          memo1.lines.add(t);
+          Timer1.Enabled:=false;
+          Timer1.Interval:=9000;
+          Timer1.Enabled:=true;
+          errorcode:= 0;
+        END;
+      IF length(outstr) <> 80 THEN
+         begin
+           errorcode:= errorcode+1;
+           if errorcode > 5 then
+             begin
+               Timer1.Enabled:=false;
+               Timer1.Interval:=errorcode*10000;
+               if Timer1.Interval > 600000 then  Timer1.Interval:=600000 ;
+               Timer1.Enabled:=true;
+             end;
+         end;
+    end;
+  except
+  end;
+end;
+
+function TForm1.ReturnTime: double ;                 //計算comport回應時間
+var
+  Present:TDatetime ;
+   h,m,s,ms:word ;
+begin
+  Present:=Now ;
+  DecodeTime(Present, h, m ,s,ms);
+  ReturnTime:=h*24*6+m*60+S ;
+end ;
+
+end.
