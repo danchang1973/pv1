@@ -1,0 +1,120 @@
+unit Unit1;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Classes, Graphics, Controls, SPBDLL, Forms, Dialogs,
+  StdCtrls, ExtCtrls, Spin, ComCtrls, Buttons;
+
+type
+  TForm1 = class(TForm)
+    Button2: TButton;
+    Memo1: TMemo;
+    Button4: TButton;
+    Button5: TButton;
+    Timer1: TTimer;
+    Label7: TLabel;
+    SpinEdit5: TSpinEdit;
+
+    procedure Button2Click(Sender: TObject);
+    procedure Button4Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
+    procedure Button5Click(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+  private
+    { Private declarations }
+    i, i1: integer;
+    P: Pchar;
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.DFM}
+
+
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  FILES:textfile;
+  Filename,sw,portn:string;
+begin
+  try
+  Memo1.Clear;
+  OpenPort(SpinEdit5.Value, 9600);
+//  i:= GetValue(1, 1, 1, PChar('public'), PChar('rad'), P, i1);
+  i:= GetValue(1, 1, 1, PChar('public'), PChar('rad_w'), P, i1);
+  Memo1.Lines.Add(p);
+  sw:=p;
+//  i:= GetValue(1, 1, 1, PChar('public'), PChar('temp'), P, i1);
+//  i:= GetValue(1, 1, 1, PChar('public'), PChar('air_temp'), P, i1);
+  i:= GetValue(1, 1, 1, PChar('public'), PChar('at_degc'), P, i1);
+  Memo1.Lines.Add(p);
+  ClosePort;
+
+  portn:=inttostr(SpinEdit5.Value);
+  Filename:='sw.dat';
+  if sw ='Failed to get table definitions' then
+    begin
+      sw:='0';
+      p:='0';
+    end;
+  if not Fileexists(Filename) then
+     filecreate(Filename);
+  AssignFile(FILES, Filename);
+  rewrite(FILES);
+  writeln(FILES, sw);
+  writeln(FILES, p);
+  writeln(FILES, portn);
+  CloseFile(FILES);
+  if sw <> '0' then  form1.WindowState:= wsMinimized;
+  except
+  end;
+end;
+
+
+procedure TForm1.Button4Click(Sender: TObject);
+begin
+  Button2.Click;
+  Timer1.Enabled:= true;
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+  Button2.Click;
+end;
+
+procedure TForm1.Button5Click(Sender: TObject);
+begin
+  Timer1.Enabled:= false;
+  ClosePort;
+end;
+
+procedure TForm1.FormShow(Sender: TObject);
+var
+  FILES:textfile;
+  Filename,sw,temp,portn,sflg:string;
+begin
+  Filename:='sw.dat';
+
+  if Fileexists(Filename) then
+    begin
+      AssignFile(FILES, Filename);
+      reset(FILES);
+      readln(FILES, sw);
+      readln(FILES, temp);
+      readln(FILES, portn);
+      if portn='' then portn:='1';
+      SpinEdit5.Value:=strtoint(portn);
+      CloseFile(FILES);
+    end;
+
+  if not Fileexists(Filename) then
+     filecreate(Filename);
+  Button4.Click;
+end;
+
+end.
